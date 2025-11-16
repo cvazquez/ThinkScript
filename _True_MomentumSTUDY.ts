@@ -1,0 +1,43 @@
+declare Lower;
+
+input length = 14;
+input calcLength = 5;
+input smoothLength = 3;
+
+def o = open;
+def c = close;
+def data = fold i = 0 to length
+           with s
+           do s + (if c > getValue(o, i)
+                   then 1
+                   else if c < getValue(o, i)
+                        then - 1
+                        else 0);
+def EMA5 = ExpAverage(data, calcLength);
+plot Main = ExpAverage(EMA5, smoothLength);
+plot Signal = ExpAverage(Main, smoothLength);
+     Main.AssignValueColor(if Main > Signal
+                           then color.green
+                           else color.red);
+     Signal.AssignValueColor(if Main > Signal
+                             then color.green
+                             else color.red);
+     Signal.HideBubble();
+     Signal.HideTitle();
+addCloud(Main, Signal, color.green, color.red);
+plot zero = if isNaN(c) then double.nan else 0;
+     zero.SetDefaultColor(Color.gray);
+     zero.hideBubble();
+     zero.hideTitle();
+plot ob = if isNaN(c) then double.nan else round(length * .7);
+     ob.SetDefaultColor(Color.gray);
+     ob.HideBubble();
+     ob.HideTitle();
+plot os = if isNaN(c) then double.nan else -round(length * .7);
+     os.SetDefaultColor(Color.gray);
+     os.HideBubble();
+     os.HideTitle();
+addCloud(ob, length, color.light_red, color.light_red, no);
+addCloud(-length, os, color.light_green, color.light_green);
+# End Code TMO
+
