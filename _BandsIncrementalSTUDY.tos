@@ -33,6 +33,7 @@ def bubbleOffsetBars = if useAutoOffset then autoOffset else manualOffsetBars;
 def prevClose = close(period = AggregationPeriod.DAY)[1];
 
 # --- % levels from previous close ---
+def pctNeg150 = prevClose * 0.9850;
 def pctNeg125 = prevClose * 0.9875;
 def pctNeg100 = prevClose * 0.99;
 def pctNeg075 = prevClose * 0.9925;
@@ -51,6 +52,7 @@ def preLow = if newDay then low else if isPremarket then Min(low, preLow[1]) els
 
 
 # --- Plot % Lines ---
+plot L_N150 = if showPercentLevels then pctNeg125 else Double.NaN;
 plot L_N125 = if showPercentLevels then pctNeg125 else Double.NaN;
 plot L_N100 = if showPercentLevels then pctNeg100 else Double.NaN;
 plot L_N075 = if showPercentLevels then pctNeg075 else Double.NaN;
@@ -63,6 +65,7 @@ plot L_P100 = if showPercentLevels then pctPos100 else Double.NaN;
 plot L_P125 = if showPercentLevels then pctPos125 else Double.NaN;
 
 # --- Styling ---
+L_N150.SetDefaultColor(Color.RED);
 L_N125.SetDefaultColor(Color.RED);
 L_N100.SetDefaultColor(Color.RED);
 L_N075.SetDefaultColor(Color.DARK_RED);
@@ -88,6 +91,7 @@ PreLowLine.SetStyle(Curve.LONG_DASH);
 # --- Add Bubbles for % levels (on last bar only) ---
 def lastBar = !IsNaN(close) and IsNaN(close[-1]);
 
+AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctNeg150, round(pctNeg150, 2) + " : -1.50%", Color.RED, no);
 AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctNeg125, round(pctNeg125, 2) + " : -1.25%", Color.RED, no);
 AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctNeg100, round(pctNeg100, 2) + " : -1.00%", Color.RED, no);
 AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctNeg075, round(pctNeg075, 2) + " : -0.75%", Color.DARK_RED, no);
@@ -104,4 +108,3 @@ AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos125, round
 AddLabel(yes, "yClose: " + AsText(prevClose), Color.YELLOW);
 AddLabel(showPremarketLevels, "pHigh: " + AsText(preHigh), Color.GREEN);
 AddLabel(showPremarketLevels, "pLow: " + AsText(preLow), Color.MAGENTA);
-
