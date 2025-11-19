@@ -1,0 +1,76 @@
+# ThinkScript Study
+# FileName: _IsPriceChangeDeltaShortLongSTUDY.tos
+# Study Name: _IsPriceChangeDeltaShortLong
+# Date: 20251119
+# Author: Carlos Vazquez
+
+# Short / Long Scanner
+# This study returns true for the following:
+# If a stock's Price Change is greater than yesterday's close + ATR (X delta input) and not in blockList (short)
+# or
+# If a stock's Price Change is Less than its yesterday's close - ATR (X delta input) (short)
+
+#  Define inputs
+input delta = 0.75; # How close to ATR we want scanner to return. Delta of 1 is exact ATR
+input atrLength = 14;
+input averageType = AverageType.WILDERS;
+input BasePeriod = AggregationPeriod.DAY;
+
+# List of stocks that have a Short Sale Borrow Rate
+def blockList =
+    GetSymbol() == "NTLA" or
+    GetSymbol() == "BROS" or
+    GetSymbol() == "POET" or
+    GetSymbol() == "RR" or
+    GetSymbol() == "RXRX" or
+    GetSymbol() == "BULL" or
+    GetSymbol() == "CRML" or
+    GetSymbol() == "SUGP" or
+    GetSymbol() == "BDRX" or
+    GetSymbol() == "QUBT" or
+    GetSymbol() == "LAC" or
+    GetSymbol() == "MTHRY" or
+    GetSymbol() == "USAR" or
+    GetSymbol() == "ORBS" or
+    GetSymbol() == "CYN" or
+    GetSymbol() == "BDSX" or
+    GetSymbol() == "HVII";
+
+
+#  Calculate ATR
+def ATR = if GetTime() < RegularTradingStart(GetYYYYMMDD()) then
+    # Premarket ATR
+    MovingAverage(
+        averageType,
+        TrueRange(
+            high(period="DAY")[1],
+            close(period="DAY")[1],
+            low(period="DAY")[1]), atrLength
+)
+else
+    WildersAverage(
+        TrueRange(
+            high(period = BasePeriod),
+            close(period = BasePeriod),
+            low(period = BasePeriod)
+        ),
+        atrLength
+    )
+;
+
+def atrDelta = ATR * delta;
+
+
+# Closing Prices
+def yesterdaysClose = close(period = aggregationPeriod.DAY)[1];
+
+# Short Calculation
+def priceChange = close - yesterdaysClose;
+
+# Detect if going Long or Short and return if meets less then or greater then close +/- ATR X Delta
+plot scan = if close < yesterdaysClose then
+            # Long
+            close < (yesterdaysClose - atrDelta)
+            else
+            # Short
+            priceChange > (atrDelta && !blockList);
