@@ -30,8 +30,9 @@ This is a collection of ThinkScripts I've created to date. About half of them I 
 ### Scanner
 * _preMarketScanMobius
 * _isDaysUntilEarningsRange
-* _IsPriceChangeGreaterThanATRdeltaShort
-* _IsPriceChangeLessThanATRdeltaLong
+* _IsPriceChangeDeltaShortLong (new - replacement)
+* _IsPriceChangeGreaterThanATRdeltaShort (deprecated)
+* _IsPriceChangeLessThanATRdeltaLong (deprecated)
 
 ### Watchlist/Scanner Columns
 * _ColumnIsNarrowSpread
