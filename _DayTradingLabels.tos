@@ -1,0 +1,148 @@
+# Label to show Low ATR price
+
+declare upper;
+
+input avgATRLength = 14;
+input averageType = AverageType.WILDERS;
+
+def isPremarket = GetTime() < RegularTradingStart(GetYYYYMMDD());
+
+def currentPrice = close(priceType = priceType.MARK);
+def previousDayClose = close(period = AggregationPeriod.DAY)[1];
+
+def basePeriod = AggregationPeriod.DAY;
+def todaysLow = Lowest(low(period =baseperiod)[0], 1);
+def todaysHigh = Highest(high(period = baseperiod)[0], 1);
+
+def ATR = WildersAverage(TrueRange(high(period = aggregationPeriod.DAY), close(period = aggregationPeriod.DAY), low(period = aggregationPeriod.DAY)), avgATRLength);
+def ATRPreMarket = MovingAverage(averageType, TrueRange(high(period=”DAY”)[1], close(period=”DAY”)[1], low(period=”DAY”)[1]), avgATRLength);
+
+def dayStart = GetDay() != GetDay()[1];  # Identifies the start of a new day
+
+# This calculates the number of 1-minute bars in 32 hours
+def numBars = 32 * 60;
+
+
+################# MISCELLANEOUS LABELS ##################
+
+## CLOSING PRICE
+    AddLabel(
+        yes,
+        "C: " + previousDayClose,
+        CreateColor(0, 255, 255),
+        Location.TOP_LEFT
+    );
+    AddLabel(
+        yes,
+        "C: " + previousDayClose,
+        CreateColor(0, 255, 255),
+        Location.BOTTOM_LEFT
+    );
+
+
+## OPENING PRICE
+    plot openingPrice = open(period = AggregationPeriod.DAY);
+    openingPrice.SetDefaultColor(Color.DARK_ORANGE);
+    openingPrice.SetLineWeight(2);
+
+    AddLabel(yes, "O: " + openingPrice, Color.DARK_ORANGE, Location.TOP_LEFT);
+    AddLabel(yes, "O: " + openingPrice, Color.DARK_ORANGE, Location.BOTTOM_LEFT);
+
+
+################# SHORT LABELS ##################
+
+## ATR SHORT
+    def prevClosePlusATRShort = previousDayClose + ATR;
+    AddLabel (
+        yes,
+        " ATR+: " + round(prevClosePlusATRShort, 2),
+        Color.PINK,
+        Location.TOP_LEFT
+    );
+
+    def preMarketPreviousClosePlusATRLong = previousDayClose + ATRPreMarket;
+    AddLabel (
+        isPremarket,
+        " ATRp+: " + round(preMarketPreviousClosePlusATRLong, 2) ,
+        Color.GRAY,
+        Location.TOP_LEFT
+    );
+
+## DTR SHORT
+    def hdtr = todaysLow + ATR;
+
+    AddLabel(
+        Yes,
+        "DTR: " + round(hdtr, 2),
+        Color.Yellow,
+        Location.TOP_LEFT
+    );
+
+## HIGH OF DAY (SHORT)
+    def dailyHigh = if dayStart then high else Max(high, dailyHigh[1]);  # Tracks the high for the day
+
+    plot HighLine = dailyHigh;  # Plots the daily high line
+    HighLine.SetDefaultColor(CreateColor(144, 213, 255));  # You can change the color if desired
+    HighLine.SetPaintingStrategy(PaintingStrategy.HORIZONTAL);  # Keep the line horizontal
+
+    AddLabel(yes, "H: " + dailyHigh, CreateColor(144, 213, 255), Location.TOP_LEFT);
+
+
+## 32 HOUR LOW OF DAY
+    # Get the high over the specified number of bars
+    def highOfLast32Hours = Highest(high, numBars);
+    def OnePercentOver = highOfLast32Hours * 1.01;
+
+    # Plot the 32-hour high line
+    AddLabel(
+        yes,
+        "32H High: " + highOfLast32Hours + " : +1%=" + OnePercentOver,
+        Color.MAGENTA,
+        Location.TOP_LEFT
+    );
+
+
+################# LONG LABELS ##################
+
+## ATR LONG
+    def prevCloseMinusATRLong = previousDayClose - ATR;
+    AddLabel (yes, " ATR-: " + round(prevCloseMinusATRLong, 2) , Color.GRAY, Location.BOTTOM_LEFT);
+
+    def preMarketPreviousCloseMinutATRLong = previousDayClose - ATRPreMarket;
+    AddLabel (
+        isPremarket,
+        " ATRp-: " + round(preMarketPreviousCloseMinutATRLong, 2),
+        Color.GRAY,
+        Location.BOTTOM_LEFT
+    );
+
+## DTR LONG
+    def ldtr = todaysHigh - ATR;
+
+    AddLabel(
+        Yes,
+        "DTR: " + round(ldtr, 2),
+        Color.RED,
+        Location.BOTTOM_LEFT
+    );
+
+## LOW OF DAY
+    def dailyLow = if dayStart then low else min(low, dailyLow[1]);  # Tracks the low for the day
+
+    plot LowLine = dailyLow;  # Plots the daily low line
+    LowLine.SetDefaultColor(Color.WHITE);  # Set the color of the line (you can change the color)
+    LowLine.SetPaintingStrategy(PaintingStrategy.HORIZONTAL);  # Keep the line horizontal
+
+    AddLabel(yes, "L: " + dailyLow, Color.WHITE, Location.BOTTOM_LEFT);
+
+## 32 HOUR LOW OF DAY
+    # Get the low over the specified number of bars
+    def lowOfLast32Hours = numBars;
+    def onePercentUnder = lowOfLast32Hours * .99;
+
+    AddLabel(
+        yes,
+        "32H Low: " + lowOfLast32Hours + " : -1%=" + onePercentUnder,
+        Color.CYAN,
+        Location.BOTTOM_LEFT
+    );
