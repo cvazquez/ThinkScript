@@ -1,4 +1,27 @@
-# Label to show Low ATR price
+# FileName: _DayTradingLabels.tos
+# Study Name: _DayTradingLabels
+# Date: 20251218
+# Author: Carlos Vazquez
+
+# Day Trading Labels
+# ------------------
+# *** MISCELLANEOUS ***
+# * Closing Price
+# * Opening Price
+#
+# *** SHORT ***
+# * ATR Short
+# * 1, 2 and 3% over ATR Short
+# * DTR Short
+# * High of Day
+# * 32 Hour High of Day
+#
+# *** LONG ***
+# * ATR Long
+# 1, 2 and 3% under ATR Long
+# * DTR Long
+# * Low of Day
+# * 32 Hour Low of Day
 
 declare upper;
 
