@@ -44,6 +44,7 @@ def pctPos050 = prevClose * 1.005;
 def pctPos075 = prevClose * 1.0075;
 def pctPos100 = prevClose * 1.01;
 def pctPos125 = prevClose * 1.0125;
+def pctPos150 = prevClose * 1.0150;
 
 # --- Premarket High/Low ---
 def isPremarket = GetTime() < RegularTradingStart(GetYYYYMMDD());
@@ -63,6 +64,7 @@ plot L_P050 = if showPercentLevels then pctPos050 else Double.NaN;
 plot L_P075 = if showPercentLevels then pctPos075 else Double.NaN;
 plot L_P100 = if showPercentLevels then pctPos100 else Double.NaN;
 plot L_P125 = if showPercentLevels then pctPos125 else Double.NaN;
+plot L_P150 = if showPercentLevels then pctPos150 else Double.NaN;
 
 # --- Styling ---
 L_N150.SetDefaultColor(Color.RED);
@@ -78,6 +80,7 @@ L_P100.SetDefaultColor(Color.GREEN);
 L_P125.SetDefaultColor(Color.GREEN);
 L_N125.SetStyle(Curve.SHORT_DASH);
 L_P125.SetStyle(Curve.SHORT_DASH);
+L_P150.SetStyle(Curve.SHORT_DASH);
 
 # --- Premarket High/Low ---
 plot PreHighLine = if showPremarketLevels and !IsNaN(preHigh) then preHigh else Double.NaN;
@@ -102,7 +105,7 @@ AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos025, round
 AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos050, round(pctPos050, 2) + " : +0.50%", Color.DARK_GREEN, yes);
 AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos075, round(pctPos075, 2) + " : +0.75%", Color.DARK_GREEN, yes);
 AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos100, round(pctPos100, 2) + " : +1.00%", Color.GREEN, yes);
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos125, round(pctPos125, 2) + " : +1.25%", Color.GREEN, yes);
+AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos125, round(pctPos125, 2) + " : +1.25%", Color.GREEN, yes);AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos150, round(pctPos150, 2) + " : +1.50%", Color.GREEN, yes);
 
 # --- Labels ---
 AddLabel(yes, "yClose: " + AsText(prevClose), Color.YELLOW);
