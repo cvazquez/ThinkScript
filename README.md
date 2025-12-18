@@ -16,6 +16,8 @@ This is a collection of ThinkScripts I've created to date. About half of them I 
 * _ATR_Minus_Prev_Close_Label (Long)
 * _ATR_Plus_Prev_Close_Label_PreMarket (Short)
 * _Average_Price
+* _DayTradingLabels (NEW)
+    > Combines: _ATR_Minus_Prev_Close_Label, _ATR_Plus_Prev_Close_Label_PreMarket, _HighOfDay, _HighOfDay32Hour, _LowOfDay, _LowOfDay32Hours, _percentOverATRLabel, _percentUnderATRLabel
 * _BandsIncremental (SPY)
 * _HighOfDay
 * _HighOfDay32Hour (Short)
