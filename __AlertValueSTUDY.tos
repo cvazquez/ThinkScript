@@ -1,0 +1,14 @@
+# ThinkScript Study
+# FileName: _IsPriceChangeDeltaShortLongSTUDY.tos
+# Study Name: _IsPriceChangeDeltaShortLong
+# Date: 20251119
+# Author: Carlos Vazquez
+
+# Short / Long Scanner
+# This study returns true for the following:
+# If a stock's Price Change is greater than yesterday's close + ATR (X delta input) and not in blockList (short)
+# or
+# If a stock's Price Change is Less than its yesterday's close - ATR (X delta input) (short)
+
+plot defaultPlot =
+close is less than SimpleMovingAvg("length" = 200)."SMA";
