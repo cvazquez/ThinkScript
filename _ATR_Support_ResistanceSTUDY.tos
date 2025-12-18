@@ -3,6 +3,7 @@ input length = 14;
 input averageType = AverageType.WILDERS;
 input BasePeriod = AggregationPeriod.DAY;
 input shortOrLong = "short";
+input showDTRLabel = yes;
 
 def IsPremarket = GetTime() < RegularTradingStart(GetYYYYMMDD());
 
@@ -39,9 +40,9 @@ plot ldtr = Today_High - ATR;
 
 # AddLabel(visible = Yes, text = "DTR: " + round(DR/ATR, 2)*100 + "%", color = Color.LIGHT_GRAY);
 AddLabel(
-    visible = Yes,
-    text = "DTR: " + round(if shortOrLong == "long" then ldtr else hdtr,2),
-    color = if shortOrLong == "long" then CreateColor(255, 95, 95) else Color.Yellow
+    showDTRLabel,
+    "DTR: " + round(if shortOrLong == "long" then ldtr else hdtr,2),
+    if shortOrLong == "long" then CreateColor(255, 95, 95) else Color.Yellow
 );
 
 
