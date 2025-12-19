@@ -1,20 +1,40 @@
+# FileName: _ColumnPercentageATRSTUDY.tos
+# Study Name: _ColumnPercentageATR
+# Date: 20251219
+# Author: Carlos Vazquez
+
+# Column to display a percentage value over/under ATR
 # Combined ATR % Above/Below for Auto Long or Short
 # Automatically switches direction based on price movement
 # Use as a column or lower study
 
 declare lower;
 
-input atrLength = 14;
+input avgATRLength = 14;
+input averageType = AverageType.WILDERS;
 
-# Calculate ATR (daily)
-def atr = WildersAverage(
-    TrueRange(
-        high(period = AggregationPeriod.DAY),
-        close(period = AggregationPeriod.DAY),
-        low(period = AggregationPeriod.DAY)
-    ),
-    atrLength
-);
+def isPremarket = GetTime() < RegularTradingStart(GetYYYYMMDD());
+
+def ATR = if isPremarket then
+    MovingAverage(
+        averageType,
+        TrueRange(
+            high(period="DAY")[1],
+            close(period="DAY")[1],
+            low(period="DAY")[1]
+        ),
+        avgATRLength
+)
+else
+    WildersAverage(
+        TrueRange(
+            high(period = AggregationPeriod.DAY),
+            close(period = AggregationPeriod.DAY),
+            low(period = AggregationPeriod.DAY)
+        ),
+        avgATRLength
+    )
+;
 
 def yClose = close(period = AggregationPeriod.DAY)[1];
 def cClose = close();
