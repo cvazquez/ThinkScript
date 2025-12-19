@@ -1,0 +1,55 @@
+# FileName: _ColumnPercentInputATRSTUDY.tos
+# Study Name: _ColumnPercentInputATR
+# Date: 20251219
+# Author: Carlos Vazquez
+
+# Column to display an inputed percentage value over/under ATR,
+# based on if price is over/under previous day's close
+
+
+input percent = 3.00;
+input avgATRLength = 14;
+input averageType = AverageType.WILDERS;
+
+def isPremarket = GetTime() < RegularTradingStart(GetYYYYMMDD());
+def yClose = close(period = AggregationPeriod.DAY)[1];
+def cClose = close();
+
+def ATR = if isPremarket then
+    MovingAverage(
+        averageType,
+        TrueRange(
+            high(period="DAY")[1],
+            close(period="DAY")[1],
+            low(period="DAY")[1]
+        ),
+        avgATRLength
+)
+else
+    WildersAverage(
+        TrueRange(
+            high(period = AggregationPeriod.DAY),
+            close(period = AggregationPeriod.DAY),
+            low(period = AggregationPeriod.DAY)
+        ),
+        avgATRLength
+    )
+;
+
+# ATR reference levels
+def yClosePlusATR = yClose + atr;
+def yCloseMinusATR = yClose - atr;
+
+# Direction logic
+def isShort = cClose > yClose;
+def isLong  = cClose < yClose;
+
+# % over ATR (short) and % below ATR (long)
+def shortValue = yClosePlusATR + (yClosePlusATR * (percent/100));
+def longValue  = yCloseMinusATR - (yCloseMinusATR * (percent/100));
+
+# display the "inputed" percentage over ATR
+plot result =
+    if isShort then round(shortValue, 2)
+    else if isLong then round(longValue, 2)
+    else 0;
