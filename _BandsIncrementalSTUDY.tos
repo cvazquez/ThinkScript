@@ -1,16 +1,23 @@
+# FileName: _BandsIncrementalSTUDY.tos
+# Study Name: _BandsIncremental
+# Date: 20251218
+# Author: Carlos Vazquez
+
+# Bands Incremental
+# ------------------
+# Display's incrememtal lines/bubbles or labels, at 1/4 percentage intervals.
+# Useful for SPY and QQQ
 # SPY % Bands and Premarket High/Low with % Bubbles
 # Draws lines from -1.25% to +1.25% of the previous day's close
 # Shows today's premarket high/low
 # Adds bubbles labeling each % level
-# By ChatGPT (GPT-5)
-
 
 declare upper;
 
 input showPremarketLevels = yes;
 input useAutoOffset = yes;
 input manualOffsetBars = 0; # used if auto offset disabled
-
+input showBubblesAsLabels = no;
 
 def showPercentLevels = GetSymbol() == "SPY";
 def day = GetDay();
@@ -53,7 +60,7 @@ def preLow = if newDay then low else if isPremarket then Min(low, preLow[1]) els
 
 
 # --- Plot % Lines ---
-plot L_N150 = if showPercentLevels then pctNeg125 else Double.NaN;
+plot L_N150 = if showPercentLevels then pctNeg150 else Double.NaN;
 plot L_N125 = if showPercentLevels then pctNeg125 else Double.NaN;
 plot L_N100 = if showPercentLevels then pctNeg100 else Double.NaN;
 plot L_N075 = if showPercentLevels then pctNeg075 else Double.NaN;
@@ -78,6 +85,7 @@ L_P050.SetDefaultColor(Color.DARK_GREEN);
 L_P075.SetDefaultColor(Color.DARK_GREEN);
 L_P100.SetDefaultColor(Color.GREEN);
 L_P125.SetDefaultColor(Color.GREEN);
+L_P150.SetDefaultColor(Color.GREEN);
 L_N125.SetStyle(Curve.SHORT_DASH);
 L_P125.SetStyle(Curve.SHORT_DASH);
 L_P150.SetStyle(Curve.SHORT_DASH);
@@ -94,20 +102,36 @@ PreLowLine.SetStyle(Curve.LONG_DASH);
 # --- Add Bubbles for % levels (on last bar only) ---
 def lastBar = !IsNaN(close) and IsNaN(close[-1]);
 
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctNeg150, round(pctNeg150, 2) + " : -1.50%", Color.RED, no);
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctNeg125, round(pctNeg125, 2) + " : -1.25%", Color.RED, no);
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctNeg100, round(pctNeg100, 2) + " : -1.00%", Color.RED, no);
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctNeg075, round(pctNeg075, 2) + " : -0.75%", Color.DARK_RED, no);
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctNeg050, round(pctNeg050, 2) + " : -0.50%", Color.DARK_RED, no);
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctNeg025, round(pctNeg025, 2) + " : -0.25%", Color.GRAY, no);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctNeg150, round(pctNeg150, 2) + " : -1.50%", Color.RED, no);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctNeg125, round(pctNeg125, 2) + " : -1.25%", Color.RED, no);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctNeg100, round(pctNeg100, 2) + " : -1.00%", Color.RED, no);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctNeg075, round(pctNeg075, 2) + " : -0.75%", Color.DARK_RED, no);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctNeg050, round(pctNeg050, 2) + " : -0.50%", Color.DARK_RED, no);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctNeg025, round(pctNeg025, 2) + " : -0.25%", Color.GRAY, no);
 
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos025, round(pctPos025, 2) + " : +0.25%", Color.GRAY, yes);
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos050, round(pctPos050, 2) + " : +0.50%", Color.DARK_GREEN, yes);
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos075, round(pctPos075, 2) + " : +0.75%", Color.DARK_GREEN, yes);
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos100, round(pctPos100, 2) + " : +1.00%", Color.GREEN, yes);
-AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos125, round(pctPos125, 2) + " : +1.25%", Color.GREEN, yes);AddChartBubble(showPercentLevels and lastBar[bubbleOffsetBars], pctPos150, round(pctPos150, 2) + " : +1.50%", Color.GREEN, yes);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctPos025, round(pctPos025, 2) + " : +0.25%", Color.GRAY, yes);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctPos050, round(pctPos050, 2) + " : +0.50%", Color.DARK_GREEN, yes);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctPos075, round(pctPos075, 2) + " : +0.75%", Color.DARK_GREEN, yes);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctPos100, round(pctPos100, 2) + " : +1.00%", Color.GREEN, yes);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctPos125, round(pctPos125, 2) + " : +1.25%", Color.GREEN, yes);
+AddChartBubble(!showBubblesAsLabels AND showPercentLevels and lastBar[bubbleOffsetBars], pctPos150, round(pctPos150, 2) + " : +1.50%", Color.GREEN, yes);
 
 # --- Labels ---
 AddLabel(yes, "yClose: " + AsText(prevClose), Color.YELLOW);
 AddLabel(showPremarketLevels, "pHigh: " + AsText(preHigh), Color.GREEN);
-AddLabel(showPremarketLevels, "pLow: " + AsText(preLow), Color.MAGENTA);
+
+AddLabel(showBubblesAsLabels AND showPercentLevels, "+0.25%: " + round(pctPos025, 2), Color.GRAY, Location.TOP_LEFT);
+AddLabel(showBubblesAsLabels AND showPercentLevels, "+0.50%: " + round(pctPos050, 2), Color.DARK_GREEN, Location.TOP_LEFT);
+AddLabel(showBubblesAsLabels AND showPercentLevels, "+0.75%: " + round(pctPos075, 2), Color.DARK_GREEN, Location.TOP_LEFT);
+AddLabel(showBubblesAsLabels AND showPercentLevels, "+1.00%: " + round(pctPos100, 2), Color.GREEN, Location.TOP_LEFT);
+AddLabel(showBubblesAsLabels AND showPercentLevels, "+1.25%: " + round(pctPos125, 2), Color.GREEN, Location.TOP_LEFT);
+AddLabel(showBubblesAsLabels AND showPercentLevels, "+1.50%: " + round(pctPos150, 2), Color.GREEN, Location.TOP_LEFT);
+
+AddLabel(showPremarketLevels, "pLow: " + AsText(preLow), Color.MAGENTA, Location.BOTTOM_LEFT);
+
+AddLabel(showBubblesAsLabels AND showPercentLevels, "-0.25%: " + round(pctNeg025, 2), Color.GRAY, Location.BOTTOM_LEFT);
+AddLabel(showBubblesAsLabels AND showPercentLevels, "-0.50%: " + round(pctNeg050, 2), Color.DARK_RED, Location.BOTTOM_LEFT);
+AddLabel(showBubblesAsLabels AND showPercentLevels, "-0.75%: " + round(pctNeg075, 2), Color.DARK_RED, Location.BOTTOM_LEFT);
+AddLabel(showBubblesAsLabels AND showPercentLevels, "-1.00%: " + round(pctNeg100, 2), Color.RED, Location.BOTTOM_LEFT);
+AddLabel(showBubblesAsLabels AND showPercentLevels, "-1.25%: " + round(pctNeg125, 2), Color.RED, Location.BOTTOM_LEFT);
+AddLabel(showBubblesAsLabels AND showPercentLevels, "-1.50%: " + round(pctNeg150, 2), Color.RED, Location.BOTTOM_LEFT);
