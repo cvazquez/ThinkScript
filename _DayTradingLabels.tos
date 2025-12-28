@@ -5,6 +5,10 @@
 
 # Day Trading Labels
 # ------------------
+# Detects pre-market and intraday trading times for appropriate ATR values
+#
+# Displays the following Labels:
+#
 # *** MISCELLANEOUS ***
 # * Closing Price
 # * Opening Price
