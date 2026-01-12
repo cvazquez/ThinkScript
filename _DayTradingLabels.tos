@@ -19,6 +19,7 @@
 # * DTR Short
 # * High of Day
 # * 32 Hour High of Day
+# * 10, 15 and 20% over CLOSE labels
 #
 # *** LONG ***
 # * ATR Long
@@ -26,6 +27,7 @@
 # * DTR Long
 # * Low of Day
 # * 32 Hour Low of Day
+# * 10, 15 and 20% under CLOSE labels
 
 declare upper;
 
@@ -77,20 +79,12 @@ def numBars = 32 * 60;
         CreateColor(0, 255, 255),
         Location.TOP_LEFT
     );
-    AddLabel(
-        yes,
-        "C: " + previousDayClose,
-        CreateColor(0, 255, 255),
-        Location.BOTTOM_LEFT
-    );
-
 
 ## OPENING PRICE
     plot openingPrice = open(period = AggregationPeriod.DAY);
     openingPrice.SetDefaultColor(Color.DARK_ORANGE);
     openingPrice.SetLineWeight(2);
 
-    AddLabel(yes, "O: " + openingPrice, Color.DARK_ORANGE, Location.TOP_LEFT);
     AddLabel(yes, "O: " + openingPrice, Color.DARK_ORANGE, Location.BOTTOM_LEFT);
 
 
@@ -107,7 +101,7 @@ def numBars = 32 * 60;
 
 
 ## Percentages Over ATR
-    #def overATRBGC = CreateColor(255, 126, 156);
+    DefineGlobalColor("overATRBGC", CreateColor(255, 126, 156));
 
     # 1% over ATR
     def onePercent = 1.00;
@@ -117,7 +111,7 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "atr+" + onePercent + "% : " + Round(atrPlus1pct, 2),
-        CreateColor(255, 126, 156),
+        GlobalColor("overATRBGC"),
         Location.TOP_LEFT
     );
 
@@ -130,7 +124,7 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "atr+" + twoPercent + "% : " + Round(atrPlus2pct, 2),
-        CreateColor(255, 126, 156),
+        GlobalColor("overATRBGC"),
         Location.TOP_LEFT
     );
 
@@ -142,7 +136,7 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "atr+" + threePercent + "% : " + Round(atrPlus3pct, 2),
-        CreateColor(255, 126, 156),
+        GlobalColor("overATRBGC"),
         Location.TOP_LEFT
     );
 
@@ -158,16 +152,18 @@ def numBars = 32 * 60;
     );
 
 ## HIGH OF DAY (SHORT)
+    DefineGlobalColor("highOfDayBGC", CreateColor(144, 213, 255));
+
     def dailyHigh = if dayStart then high else Max(high, dailyHigh[1]);  # Tracks the high for the day
 
     plot HighLine = dailyHigh;  # Plots the daily high line
-    HighLine.SetDefaultColor(CreateColor(144, 213, 255));  # You can change the color if desired
+    HighLine.SetDefaultColor(GlobalColor("highOfDayBGC"));  # You can change the color if desired
     HighLine.SetPaintingStrategy(PaintingStrategy.HORIZONTAL);  # Keep the line horizontal
 
     AddLabel(
         yes,
         "H: " + dailyHigh,
-        CreateColor(144, 213, 255),
+        GlobalColor("highOfDayBGC"),
         Location.TOP_LEFT
     );
 
@@ -181,9 +177,35 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "32H High: " + highOfLast32Hours + " : +1%=" + OnePercentOver,
-        Color.MAGENTA,
+        GlobalColor("highOfDayBGC"),
         Location.TOP_LEFT
     );
+
+
+## PERCENTAGES ABOVE CLOSE
+    ## 20% above close
+        AddLabel(
+            yes,
+            "Close+20%: " + round(previousDayClose * 1.2, 2),
+            Color.MAGENTA,
+            Location.TOP_RIGHT
+        );
+
+    ## 15% above close
+        AddLabel(
+            yes,
+            "Close+15%: " + round(previousDayClose * 1.15, 2),
+            Color.MAGENTA,
+            Location.TOP_RIGHT
+        );
+
+    ## 10% above close
+        AddLabel(
+            yes,
+            "Close+10%: " + round(previousDayClose * 1.1, 2),
+            Color.MAGENTA,
+            Location.TOP_RIGHT
+        );
 
 
 ################# LONG LABELS ##################
@@ -194,7 +216,7 @@ def numBars = 32 * 60;
 
 
 ## Percentages Under ATR
-    #def underATRBGC = CreateColor(211, 211, 211);
+    DefineGlobalColor("underATRBGC", CreateColor(211, 211, 211));
 
     # 1% under ATR
     def onePercentUnder = 1 - (onePercent / 100);
@@ -203,7 +225,7 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "atr-" + onePercent + "% : " + Round(atrMinus1pct, 2),
-        CreateColor(211, 211, 211),
+        GlobalColor("underATRBGC"),
         Location.BOTTOM_LEFT
     );
 
@@ -215,7 +237,7 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "atr-" + twoPercent + "% : " + Round(atrMinus2pct, 2),
-        CreateColor(211, 211, 211),
+        GlobalColor("underATRBGC"),
         Location.BOTTOM_LEFT
     );
 
@@ -226,7 +248,7 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "atr-" + threePercent + "% : " + Round(atrMinus3pct, 2),
-        CreateColor(211, 211, 211),
+        GlobalColor("underATRBGC"),
         Location.BOTTOM_LEFT
     );
 
@@ -248,7 +270,12 @@ def numBars = 32 * 60;
     LowLine.SetDefaultColor(Color.WHITE);  # Set the color of the line (you can change the color)
     LowLine.SetPaintingStrategy(PaintingStrategy.HORIZONTAL);  # Keep the line horizontal
 
-    AddLabel(yes, "L: " + round(dailyLow, 2), Color.WHITE, Location.BOTTOM_LEFT);
+    AddLabel(
+        yes,
+        "L: " + round(dailyLow, 2),
+        Color.WHITE,
+        Location.BOTTOM_LEFT
+    );
 
 ## 32 HOUR LOW OF DAY
     # Get the low over the specified number of bars
@@ -258,6 +285,32 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "32H Low: " + lowOfLast32Hours + " : -1%=" + onePercentUnderLow,
-        Color.CYAN,
+        Color.WHITE,
         Location.BOTTOM_LEFT
     );
+
+
+## PERCENTAGES BELOW CLOSE
+    ## 20% below close
+        AddLabel(
+            yes,
+            "Close-20%: " + round(previousDayClose * 0.80, 2),
+            Color.CYAN,
+            Location.BOTTOM_RIGHT
+        );
+
+    ## 15% below close
+        AddLabel(
+            yes,
+            "Close-15%: " + round(previousDayClose * 0.85, 2),
+            Color.CYAN,
+            Location.BOTTOM_RIGHT
+        );
+
+    ## 10% below close
+        AddLabel(
+            yes,
+            "Close-10%: " + round(previousDayClose * 0.90, 2),
+            Color.CYAN,
+            Location.BOTTOM_RIGHT
+        );
