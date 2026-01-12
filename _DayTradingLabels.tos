@@ -202,7 +202,7 @@ def numBars = 32 * 60;
 
     AddLabel(
         yes,
-        "atr+" + onePercent + "% : " + Round(atrMinus1pct, 2),
+        "atr-" + onePercent + "% : " + Round(atrMinus1pct, 2),
         CreateColor(211, 211, 211),
         Location.BOTTOM_LEFT
     );
@@ -214,7 +214,7 @@ def numBars = 32 * 60;
 
     AddLabel(
         yes,
-        "atr+" + twoPercent + "% : " + Round(atrMinus2pct, 2),
+        "atr-" + twoPercent + "% : " + Round(atrMinus2pct, 2),
         CreateColor(211, 211, 211),
         Location.BOTTOM_LEFT
     );
@@ -225,7 +225,7 @@ def numBars = 32 * 60;
 
     AddLabel(
         yes,
-        "atr+" + threePercent + "% : " + Round(atrMinus3pct, 2),
+        "atr-" + threePercent + "% : " + Round(atrMinus3pct, 2),
         CreateColor(211, 211, 211),
         Location.BOTTOM_LEFT
     );
@@ -252,8 +252,7 @@ def numBars = 32 * 60;
 
 ## 32 HOUR LOW OF DAY
     # Get the low over the specified number of bars
-    #def lowOfLast32Hours = Lowest(low, numBars);
-    def lowOfLast32Hours = low;
+    def lowOfLast32Hours = if low < dailyLow then low else dailyLow;
     def onePercentUnderLow = round(lowOfLast32Hours * .99, 2);
 
     AddLabel(
