@@ -12,7 +12,8 @@
 
 # --- Trade Entry and Profit Targets ---
 # Detects if a position is open and uses the average entry price
-def entry = GetAveragePrice();
+input manualEntry = 0.00;
+def entry = if manualEntry > 0 then manualEntry else GetAveragePrice();
 def hasPosition = entry > 0;
 
 
@@ -63,7 +64,7 @@ def hasPosition = entry > 0;
 
     plot Short025 = if hasPosition then entry * (1 - (p1 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+0.25%: " + Short025,
                 GlobalColor("ShortBGC"),
                 Location.TOP_RIGHT
@@ -71,7 +72,7 @@ def hasPosition = entry > 0;
 
     plot Short050 = if hasPosition then entry * (1 - (p2 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+0.50%: " + Short050,
                 GlobalColor("ShortBGC"),
                 Location.TOP_RIGHT
@@ -79,7 +80,7 @@ def hasPosition = entry > 0;
 
     plot Short075 = if hasPosition then entry * (1 - (p3 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+0.75%: " + Short075,
                 GlobalColor("ShortBGC"),
                 Location.TOP_RIGHT
@@ -87,7 +88,7 @@ def hasPosition = entry > 0;
 
     plot Short100 = if hasPosition then entry * (1 - (p4 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+1.00%: " + Short100,
                 GlobalColor("ShortBGC"),
                 Location.TOP_RIGHT
@@ -95,7 +96,7 @@ def hasPosition = entry > 0;
 
     plot Short150 = if hasPosition then entry * (1 - (p5 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+1.50%: " + Short150,
                 GlobalColor("ShortBGC"),
                 Location.TOP_RIGHT
@@ -103,7 +104,7 @@ def hasPosition = entry > 0;
 
     plot Short200 = if hasPosition then entry * (1 - (p6 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+2.00%: " + Short200,
                 GlobalColor("ShortBGC"),
                 Location.TOP_RIGHT
@@ -111,7 +112,7 @@ def hasPosition = entry > 0;
 
     plot Short300 = if hasPosition then entry * (1 - (p7 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+3.00%: " + Short300,
                 GlobalColor("ShortBGC"),
                 Location.TOP_RIGHT
@@ -124,7 +125,7 @@ def hasPosition = entry > 0;
 
     plot Long025 = if hasPosition then entry * (1 + (p1 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+0.25%: " + Long025,
                 GlobalColor("LongBGC"),
                 Location.BOTTOM_RIGHT
@@ -132,7 +133,7 @@ def hasPosition = entry > 0;
 
     plot Long050 = if hasPosition then entry * (1 + (p2 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+0.50%: " + Long050,
                 GlobalColor("LongBGC"),
                 Location.BOTTOM_RIGHT
@@ -140,7 +141,7 @@ def hasPosition = entry > 0;
 
     plot Long075 = if hasPosition then entry * (1 + (p3 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+0.75%: " + Long075,
                 GlobalColor("LongBGC"),
                 Location.BOTTOM_RIGHT
@@ -148,7 +149,7 @@ def hasPosition = entry > 0;
 
     plot Long100 = if hasPosition then entry * (1 + (p4 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+1.00%: " + Long100,
                 GlobalColor("LongBGC"),
                 Location.BOTTOM_RIGHT
@@ -156,7 +157,7 @@ def hasPosition = entry > 0;
 
     plot Long150 = if hasPosition then entry * (1 + (p5 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+1.50%: " + Long150,
                 GlobalColor("LongBGC"),
                 Location.BOTTOM_RIGHT
@@ -164,7 +165,7 @@ def hasPosition = entry > 0;
 
     plot Long200 = if hasPosition then entry * (1 + (p6 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+2.00%: " + Long200,
                 GlobalColor("LongBGC"),
                 Location.BOTTOM_RIGHT
@@ -172,7 +173,7 @@ def hasPosition = entry > 0;
 
     plot Long300 = if hasPosition then entry * (1 + (p7 / 100)) else Double.NaN;
     AddLabel(
-                yes,
+                hasPosition,
                 "+3.00%: " + Long300,
                 GlobalColor("LongBGC"),
                 Location.BOTTOM_RIGHT
