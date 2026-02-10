@@ -1,0 +1,213 @@
+# FileName: _ActiveDayTradeLabels.tos
+# Study Name: _ActiveDayTradeLabels
+# Date: 20260210
+# Author: Carlos Vazquez
+
+# Active Day Trading Labels
+# -------------------------
+# Takes trade price, and create labels and lines for:
+# 0.25, 0.50, 0.75, 1.00, 1.50, 2.00, 3.00 percentages of profit, for both long and short positions.
+# Also add low and high ATR labels.
+
+
+# --- Trade Entry and Profit Targets ---
+# Detects if a position is open and uses the average entry price
+def entry = GetAveragePrice();
+def hasPosition = entry > 0;
+
+
+###### --- ATR Calculations --- ######
+    input avgATRLength = 14;
+    input averageType = AverageType.WILDERS;
+
+    def isPremarket = GetTime() < RegularTradingStart(GetYYYYMMDD());
+    def previousDayClose = close(period = AggregationPeriod.DAY)[1];
+
+    def ATR = if isPremarket then
+        MovingAverage(
+            averageType,
+            TrueRange(
+                high(period="DAY")[1],
+                close(period="DAY")[1],
+                low(period="DAY")[1]
+            ),
+            avgATRLength
+    )
+    else
+        WildersAverage(
+            TrueRange(
+                high(period = AggregationPeriod.DAY),
+                close(period = AggregationPeriod.DAY),
+                low(period = AggregationPeriod.DAY)
+            ),
+            avgATRLength
+        )
+    ;
+    def highATR = previousDayClose + atr;
+    def lowATR = previousDayClose - atr;
+
+
+# Define Profit Percentages
+    def p1 = 0.25;
+    def p2 = 0.50;
+    def p3 = 0.75;
+    def p4 = 1.00;
+    def p5 = 1.50;
+    def p6 = 2.00;
+    def p7 = 3.00;
+
+
+############### Short Profit Lines and Labels ###############
+    DefineGlobalColor("ShortBGC", CreateColor(255, 126, 156));
+
+
+    plot Short025 = if hasPosition then entry * (1 - (p1 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+0.25%: " + Short025,
+                GlobalColor("ShortBGC"),
+                Location.TOP_RIGHT
+            );
+
+    plot Short050 = if hasPosition then entry * (1 - (p2 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+0.50%: " + Short050,
+                GlobalColor("ShortBGC"),
+                Location.TOP_RIGHT
+            );
+
+    plot Short075 = if hasPosition then entry * (1 - (p3 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+0.75%: " + Short075,
+                GlobalColor("ShortBGC"),
+                Location.TOP_RIGHT
+            );
+
+    plot Short100 = if hasPosition then entry * (1 - (p4 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+1.00%: " + Short100,
+                GlobalColor("ShortBGC"),
+                Location.TOP_RIGHT
+            );
+
+    plot Short150 = if hasPosition then entry * (1 - (p5 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+1.50%: " + Short150,
+                GlobalColor("ShortBGC"),
+                Location.TOP_RIGHT
+            );
+
+    plot Short200 = if hasPosition then entry * (1 - (p6 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+2.00%: " + Short200,
+                GlobalColor("ShortBGC"),
+                Location.TOP_RIGHT
+            );
+
+    plot Short300 = if hasPosition then entry * (1 - (p7 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+3.00%: " + Short300,
+                GlobalColor("ShortBGC"),
+                Location.TOP_RIGHT
+            );
+
+
+############### Long Profit Lines and Labels ###############
+    DefineGlobalColor("LongBGC", CreateColor(211, 211, 211));
+
+
+    plot Long025 = if hasPosition then entry * (1 + (p1 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+0.25%: " + Long025,
+                GlobalColor("LongBGC"),
+                Location.BOTTOM_RIGHT
+            );
+
+    plot Long050 = if hasPosition then entry * (1 + (p2 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+0.50%: " + Long050,
+                GlobalColor("LongBGC"),
+                Location.BOTTOM_RIGHT
+            );
+
+    plot Long075 = if hasPosition then entry * (1 + (p3 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+0.75%: " + Long075,
+                GlobalColor("LongBGC"),
+                Location.BOTTOM_RIGHT
+            );
+
+    plot Long100 = if hasPosition then entry * (1 + (p4 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+1.00%: " + Long100,
+                GlobalColor("LongBGC"),
+                Location.BOTTOM_RIGHT
+            );
+
+    plot Long150 = if hasPosition then entry * (1 + (p5 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+1.50%: " + Long150,
+                GlobalColor("LongBGC"),
+                Location.BOTTOM_RIGHT
+            );
+
+    plot Long200 = if hasPosition then entry * (1 + (p6 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+2.00%: " + Long200,
+                GlobalColor("LongBGC"),
+                Location.BOTTOM_RIGHT
+            );
+
+    plot Long300 = if hasPosition then entry * (1 + (p7 / 100)) else Double.NaN;
+    AddLabel(
+                yes,
+                "+3.00%: " + Long300,
+                GlobalColor("LongBGC"),
+                Location.BOTTOM_RIGHT
+            );
+
+
+############### ATR labels ###############
+    AddLabel(yes, "ATR: " + Round(atr, 2), Color.YELLOW, Location.TOP_LEFT);
+
+    AddLabel(yes, "H-ATR: " + Round(highATR, 2), Color.GREEN, Location.TOP_LEFT);
+
+
+## DTR
+    def basePeriod = AggregationPeriod.DAY;
+    def todaysHigh = Highest(high(period = baseperiod)[0], 1);
+    def ldtr = todaysHigh - ATR;
+
+    AddLabel(
+        Yes,
+        "DTR: " + round(ldtr, 2),
+        Color.RED,
+        Location.BOTTOM_LEFT
+    );
+
+    AddLabel(yes, "L-ATR: " + Round(lowATR, 2), Color.GREEN, Location.BOTTOM_LEFT);
+
+
+## CLOSING PRICE
+    AddLabel(
+        yes,
+        "C: " + previousDayClose,
+        CreateColor(0, 255, 255),
+        Location.TOP_LEFT
+    );
+
+
+# Entry Label
+    AddLabel(hasPosition, "Entry: " + entry, Color.WHITE);
