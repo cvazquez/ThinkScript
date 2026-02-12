@@ -59,123 +59,148 @@ def hasPosition = entry > 0;
 
 
 ############### Short Profit Lines and Labels ###############
-    DefineGlobalColor("ShortBGC", CreateColor(255, 126, 156));
+    DefineGlobalColor("ShortBGC025", CreateColor(255, 126, 156));
+    DefineGlobalColor("ShortBGC050", CreateColor(230, 126, 156));
+    DefineGlobalColor("ShortBGC075", CreateColor(205, 126, 156));
+    DefineGlobalColor("ShortBGC100", CreateColor(180, 126, 156));
+    DefineGlobalColor("ShortBGC150", CreateColor(155, 126, 156));
+    DefineGlobalColor("ShortBGC200", CreateColor(130, 126, 156));
+    DefineGlobalColor("ShortBGC300", CreateColor(105, 126, 156));
 
 
     plot Short025 = if hasPosition then entry * (1 - (p1 / 100)) else Double.NaN;
+    Short025.SetDefaultColor(GlobalColor("ShortBGC025"));
     AddLabel(
                 hasPosition,
                 "+0.25%: " + Short025,
-                GlobalColor("ShortBGC"),
+                GlobalColor("ShortBGC025"),
                 Location.TOP_RIGHT
             );
 
     plot Short050 = if hasPosition then entry * (1 - (p2 / 100)) else Double.NaN;
+    Short050.SetDefaultColor(GlobalColor("ShortBGC050"));
     AddLabel(
                 hasPosition,
                 "+0.50%: " + Short050,
-                GlobalColor("ShortBGC"),
+                GlobalColor("ShortBGC050"),
                 Location.TOP_RIGHT
             );
 
     plot Short075 = if hasPosition then entry * (1 - (p3 / 100)) else Double.NaN;
+    Short075.SetDefaultColor(GlobalColor("ShortBGC075"));
     AddLabel(
                 hasPosition,
                 "+0.75%: " + Short075,
-                GlobalColor("ShortBGC"),
+                GlobalColor("ShortBGC075"),
                 Location.TOP_RIGHT
             );
 
     plot Short100 = if hasPosition then entry * (1 - (p4 / 100)) else Double.NaN;
+    Short100.SetDefaultColor(GlobalColor("ShortBGC100"));
     AddLabel(
                 hasPosition,
                 "+1.00%: " + Short100,
-                GlobalColor("ShortBGC"),
+                GlobalColor("ShortBGC100"),
                 Location.TOP_RIGHT
             );
 
     plot Short150 = if hasPosition then entry * (1 - (p5 / 100)) else Double.NaN;
+    Short150.SetDefaultColor(GlobalColor("ShortBGC150"));
     AddLabel(
                 hasPosition,
                 "+1.50%: " + Short150,
-                GlobalColor("ShortBGC"),
+                GlobalColor("ShortBGC150"),
                 Location.TOP_RIGHT
             );
 
     plot Short200 = if hasPosition then entry * (1 - (p6 / 100)) else Double.NaN;
+    Short200.SetDefaultColor(GlobalColor("ShortBGC200"));
     AddLabel(
                 hasPosition,
                 "+2.00%: " + Short200,
-                GlobalColor("ShortBGC"),
+                GlobalColor("ShortBGC200"),
                 Location.TOP_RIGHT
             );
 
     plot Short300 = if hasPosition then entry * (1 - (p7 / 100)) else Double.NaN;
+    Short300.SetDefaultColor(GlobalColor("ShortBGC300"));
     AddLabel(
                 hasPosition,
                 "+3.00%: " + Short300,
-                GlobalColor("ShortBGC"),
+                GlobalColor("ShortBGC300"),
                 Location.TOP_RIGHT
             );
 
 
 ############### Long Profit Lines and Labels ###############
-    DefineGlobalColor("LongBGC", CreateColor(211, 211, 211));
-
+    DefineGlobalColor("LongBGC025", CreateColor(211, 211, 190));
+    DefineGlobalColor("LongBGC050", CreateColor(211, 211, 170));
+    DefineGlobalColor("LongBGC075", CreateColor(211, 211, 150));
+    DefineGlobalColor("LongBGC100", CreateColor(211, 211, 130));
+    DefineGlobalColor("LongBGC150", CreateColor(211, 211, 110));
+    DefineGlobalColor("LongBGC200", CreateColor(211, 211, 90));
+    DefineGlobalColor("LongBGC300", CreateColor(211, 211, 70));
 
     plot Long025 = if hasPosition then entry * (1 + (p1 / 100)) else Double.NaN;
+    Long025.SetDefaultColor(GlobalColor("LongBGC025"));
     AddLabel(
                 hasPosition,
                 "+0.25%: " + Long025,
-                GlobalColor("LongBGC"),
+                GlobalColor("LongBGC025"),
                 Location.BOTTOM_RIGHT
             );
 
     plot Long050 = if hasPosition then entry * (1 + (p2 / 100)) else Double.NaN;
+    Long050.SetDefaultColor(GlobalColor("LongBGC050"));
     AddLabel(
                 hasPosition,
                 "+0.50%: " + Long050,
-                GlobalColor("LongBGC"),
+                GlobalColor("LongBGC050"),
                 Location.BOTTOM_RIGHT
             );
 
     plot Long075 = if hasPosition then entry * (1 + (p3 / 100)) else Double.NaN;
+    Long075.SetDefaultColor(GlobalColor("LongBGC075"));
     AddLabel(
                 hasPosition,
                 "+0.75%: " + Long075,
-                GlobalColor("LongBGC"),
+                GlobalColor("LongBGC075"),
                 Location.BOTTOM_RIGHT
             );
 
     plot Long100 = if hasPosition then entry * (1 + (p4 / 100)) else Double.NaN;
+    Long100.SetDefaultColor(GlobalColor("LongBGC100"));
     AddLabel(
                 hasPosition,
                 "+1.00%: " + Long100,
-                GlobalColor("LongBGC"),
+                GlobalColor("LongBGC100"),
                 Location.BOTTOM_RIGHT
             );
 
     plot Long150 = if hasPosition then entry * (1 + (p5 / 100)) else Double.NaN;
+    Long150.SetDefaultColor(GlobalColor("LongBGC150"));
     AddLabel(
                 hasPosition,
                 "+1.50%: " + Long150,
-                GlobalColor("LongBGC"),
+                GlobalColor("LongBGC150"),
                 Location.BOTTOM_RIGHT
             );
 
     plot Long200 = if hasPosition then entry * (1 + (p6 / 100)) else Double.NaN;
+    Long200.SetDefaultColor(GlobalColor("LongBGC200"));
     AddLabel(
                 hasPosition,
                 "+2.00%: " + Long200,
-                GlobalColor("LongBGC"),
+                GlobalColor("LongBGC200"),
                 Location.BOTTOM_RIGHT
             );
 
     plot Long300 = if hasPosition then entry * (1 + (p7 / 100)) else Double.NaN;
+    Long300.SetDefaultColor(GlobalColor("LongBGC300"));
     AddLabel(
                 hasPosition,
                 "+3.00%: " + Long300,
-                GlobalColor("LongBGC"),
+                GlobalColor("LongBGC300"),
                 Location.BOTTOM_RIGHT
             );
 
