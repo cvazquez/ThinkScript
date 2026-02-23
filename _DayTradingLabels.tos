@@ -34,6 +34,17 @@ declare upper;
 input avgATRLength = 14;
 input averageType = AverageType.WILDERS;
 
+def indexList = GetSymbol() == "SPY" or
+                GetSymbol() == "QQQ" or
+                GetSymbol() == "RUT";
+
+def leveragedIndexList = GetSymbol() == "SQQQ" or
+                    GetSymbol() == "TQQQ" or
+                    GetSymbol() == "SPXL" or
+                    GetSymbol() == "SPXS";
+
+def showEquityPercentageLabels = !indexList and !leveragedIndexList;
+
 def isPremarket = GetTime() < RegularTradingStart(GetYYYYMMDD());
 
 def currentPrice = close(priceType = priceType.MARK);
@@ -183,9 +194,17 @@ def numBars = 32 * 60;
 
 
 ## PERCENTAGES ABOVE CLOSE
+    ## 25% above close
+        AddLabel(
+            showEquityPercentageLabels,
+            "Close+25%: " + round(previousDayClose * 1.25, 2),
+            Color.MAGENTA,
+            Location.TOP_RIGHT
+        );
+
     ## 20% above close
         AddLabel(
-            yes,
+            showEquityPercentageLabels,
             "Close+20%: " + round(previousDayClose * 1.2, 2),
             Color.MAGENTA,
             Location.TOP_RIGHT
@@ -193,7 +212,7 @@ def numBars = 32 * 60;
 
     ## 15% above close
         AddLabel(
-            yes,
+            showEquityPercentageLabels,
             "Close+15%: " + round(previousDayClose * 1.15, 2),
             Color.MAGENTA,
             Location.TOP_RIGHT
@@ -201,7 +220,7 @@ def numBars = 32 * 60;
 
     ## 10% above close
         AddLabel(
-            yes,
+            showEquityPercentageLabels,
             "Close+10%: " + round(previousDayClose * 1.1, 2),
             Color.MAGENTA,
             Location.TOP_RIGHT
@@ -291,9 +310,17 @@ def numBars = 32 * 60;
 
 
 ## PERCENTAGES BELOW CLOSE
+    ## 25% below close
+        AddLabel(
+            showEquityPercentageLabels,
+            "Close-25%: " + round(previousDayClose * 0.75, 2),
+            Color.CYAN,
+            Location.BOTTOM_RIGHT
+        );
+
     ## 20% below close
         AddLabel(
-            yes,
+            showEquityPercentageLabels,
             "Close-20%: " + round(previousDayClose * 0.80, 2),
             Color.CYAN,
             Location.BOTTOM_RIGHT
@@ -301,7 +328,7 @@ def numBars = 32 * 60;
 
     ## 15% below close
         AddLabel(
-            yes,
+            showEquityPercentageLabels,
             "Close-15%: " + round(previousDayClose * 0.85, 2),
             Color.CYAN,
             Location.BOTTOM_RIGHT
@@ -309,8 +336,60 @@ def numBars = 32 * 60;
 
     ## 10% below close
         AddLabel(
-            yes,
+            showEquityPercentageLabels,
             "Close-10%: " + round(previousDayClose * 0.90, 2),
+            Color.CYAN,
+            Location.BOTTOM_RIGHT
+        );
+
+
+    ## Leveraged Indexes - 3, 6 and 9% below close
+        ## 9% below close
+        AddLabel(
+            leveragedIndexList,
+            "Close-9%: " + round(previousDayClose * 0.91, 2),
+            Color.CYAN,
+            Location.BOTTOM_RIGHT
+        );
+
+        ## 6% below close
+        AddLabel(
+            leveragedIndexList,
+            "Close-6%: " + round(previousDayClose * 0.94, 2),
+            Color.CYAN,
+            Location.BOTTOM_RIGHT
+        );
+
+        ## 3% below close
+        AddLabel(
+            leveragedIndexList,
+            "Close-3%: " + round(previousDayClose * 0.97, 2),
+            Color.CYAN,
+            Location.BOTTOM_RIGHT
+        );
+
+
+     ## Indexes - 1, 2, 3% below close
+        ## 1% below close
+        AddLabel(
+            indexList,
+            "Close-1%: " + round(previousDayClose * 0.99, 2),
+            Color.CYAN,
+            Location.BOTTOM_RIGHT
+        );
+
+        ## 2% below close
+        AddLabel(
+            indexList,
+            "Close-2%: " + round(previousDayClose * 0.98, 2),
+            Color.CYAN,
+            Location.BOTTOM_RIGHT
+        );
+
+        ## 3% below close
+        AddLabel(
+            indexList,
+            "Close-3%: " + round(previousDayClose * 0.97, 2),
             Color.CYAN,
             Location.BOTTOM_RIGHT
         );
