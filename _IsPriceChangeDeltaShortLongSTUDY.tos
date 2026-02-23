@@ -17,7 +17,7 @@ input averageType = AverageType.WILDERS;
 input BasePeriod = AggregationPeriod.DAY;
 
 # List of stocks that have a Short Sale Borrow Rate
-def blockList =
+def shortBlockList =
     GetSymbol() == "NTLA" or
     GetSymbol() == "BROS" or
     GetSymbol() == "POET" or
@@ -34,7 +34,9 @@ def blockList =
     GetSymbol() == "ORBS" or
     GetSymbol() == "CYN" or
     GetSymbol() == "BDSX" or
-    GetSymbol() == "HVII";
+    GetSymbol() == "HVII" or
+    GetSymbol() == "ZIM" or
+    GetSymbol() == "IBRX";
 
 
 #  Calculate ATR
@@ -73,4 +75,4 @@ plot scan = if close < yesterdaysClose then
             close < (yesterdaysClose - atrDelta)
             else
             # Short
-            priceChange > (atrDelta && !blockList);
+            priceChange > (atrDelta && !shortBlockList);
