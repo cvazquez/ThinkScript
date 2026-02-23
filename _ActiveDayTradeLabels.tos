@@ -237,3 +237,11 @@ def hasPosition = entry > 0;
 
 # Entry Label
     AddLabel(hasPosition, "Entry: " + entry, Color.WHITE);
+
+    def profitLossPercentage = if hasPosition then -((close - entry) / entry) * 100 else 0;
+    AddLabel(
+        hasPosition,
+        "P/L%: " + Round(profitLossPercentage, 2) + "%",
+        if profitLossPercentage > 0 then Color.GREEN else if profitLossPercentage < 0 then Color.RED else Color.GRAY,
+        Location.TOP_LEFT
+    );
