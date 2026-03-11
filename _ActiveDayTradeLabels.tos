@@ -56,6 +56,7 @@ def hasPosition = entry > 0;
     def p5 = 1.50;
     def p6 = 2.00;
     def p7 = 3.00;
+    def p8 = 5.00;
 
 
 ############### Short Profit Lines and Labels ###############
@@ -66,16 +67,16 @@ def hasPosition = entry > 0;
     DefineGlobalColor("ShortBGC150", CreateColor(155, 126, 156));
     DefineGlobalColor("ShortBGC200", CreateColor(130, 126, 156));
     DefineGlobalColor("ShortBGC300", CreateColor(105, 126, 156));
+    DefineGlobalColor("ShortBGC500", CreateColor(105, 126, 156));
 
-
-    plot Short025 = if hasPosition then entry * (1 - (p1 / 100)) else Double.NaN;
-    Short025.SetDefaultColor(GlobalColor("ShortBGC025"));
-    AddLabel(
-                hasPosition,
-                "+0.25%: " + Short025,
-                GlobalColor("ShortBGC025"),
-                Location.TOP_RIGHT
-            );
+#    plot Short025 = if hasPosition then entry * (1 - (p1 / 100)) else Double.NaN;
+#    Short025.SetDefaultColor(GlobalColor("ShortBGC025"));
+#    AddLabel(
+#                hasPosition,
+#                "+0.25%: " + Short025,
+#                GlobalColor("ShortBGC025"),
+#                Location.TOP_RIGHT
+#            );
 
     plot Short050 = if hasPosition then entry * (1 - (p2 / 100)) else Double.NaN;
     Short050.SetDefaultColor(GlobalColor("ShortBGC050"));
@@ -86,14 +87,14 @@ def hasPosition = entry > 0;
                 Location.TOP_RIGHT
             );
 
-    plot Short075 = if hasPosition then entry * (1 - (p3 / 100)) else Double.NaN;
-    Short075.SetDefaultColor(GlobalColor("ShortBGC075"));
-    AddLabel(
-                hasPosition,
-                "+0.75%: " + Short075,
-                GlobalColor("ShortBGC075"),
-                Location.TOP_RIGHT
-            );
+#    plot Short075 = if hasPosition then entry * (1 - (p3 / 100)) else Double.NaN;
+#    Short075.SetDefaultColor(GlobalColor("ShortBGC075"));
+#    AddLabel(
+#                hasPosition,
+#                "+0.75%: " + Short075,
+#                GlobalColor("ShortBGC075"),
+#                Location.TOP_RIGHT
+#            );
 
     plot Short100 = if hasPosition then entry * (1 - (p4 / 100)) else Double.NaN;
     Short100.SetDefaultColor(GlobalColor("ShortBGC100"));
@@ -104,14 +105,14 @@ def hasPosition = entry > 0;
                 Location.TOP_RIGHT
             );
 
-    plot Short150 = if hasPosition then entry * (1 - (p5 / 100)) else Double.NaN;
-    Short150.SetDefaultColor(GlobalColor("ShortBGC150"));
-    AddLabel(
-                hasPosition,
-                "+1.50%: " + Short150,
-                GlobalColor("ShortBGC150"),
-                Location.TOP_RIGHT
-            );
+#    plot Short150 = if hasPosition then entry * (1 - (p5 / 100)) else Double.NaN;
+#    Short150.SetDefaultColor(GlobalColor("ShortBGC150"));
+#    AddLabel(
+#                hasPosition,
+#                "+1.50%: " + Short150,
+#                GlobalColor("ShortBGC150"),
+#                Location.TOP_RIGHT
+#            );
 
     plot Short200 = if hasPosition then entry * (1 - (p6 / 100)) else Double.NaN;
     Short200.SetDefaultColor(GlobalColor("ShortBGC200"));
@@ -128,6 +129,15 @@ def hasPosition = entry > 0;
                 hasPosition,
                 "+3.00%: " + Short300,
                 GlobalColor("ShortBGC300"),
+                Location.TOP_RIGHT
+            );
+
+    plot Short500 = if hasPosition then entry * (1 - (p8 / 100)) else Double.NaN;
+    Short500.SetDefaultColor(GlobalColor("ShortBGC500"));
+    AddLabel(
+                hasPosition,
+                "+5.00%: " + Short500,
+                GlobalColor("ShortBGC500"),
                 Location.TOP_RIGHT
             );
 
