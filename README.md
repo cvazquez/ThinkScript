@@ -12,6 +12,7 @@ This is a collection of ThinkScripts I've created to date. About half of them I 
 ## Custom Studies In Use
 
 ### Chart
+* _ActiveDayTradeLabels (NEWest)
 * _ATR_Support_Resistance
 * _ATR_Minus_Prev_Close_Label (Long)
 * _ATR_Plus_Prev_Close_Label_PreMarket (Short)
