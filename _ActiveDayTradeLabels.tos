@@ -150,15 +150,16 @@ def hasPosition = entry > 0;
     DefineGlobalColor("LongBGC150", CreateColor(211, 211, 110));
     DefineGlobalColor("LongBGC200", CreateColor(211, 211, 90));
     DefineGlobalColor("LongBGC300", CreateColor(211, 211, 70));
+    DefineGlobalColor("LongBGC500", CreateColor(211, 211, 50));
 
-    plot Long025 = if hasPosition then entry * (1 + (p1 / 100)) else Double.NaN;
-    Long025.SetDefaultColor(GlobalColor("LongBGC025"));
-    AddLabel(
-                hasPosition,
-                "+0.25%: " + Long025,
-                GlobalColor("LongBGC025"),
-                Location.BOTTOM_RIGHT
-            );
+#    plot Long025 = if hasPosition then entry * (1 + (p1 / 100)) else Double.NaN;
+#    Long025.SetDefaultColor(GlobalColor("LongBGC025"));
+#    AddLabel(
+#                hasPosition,
+#                "+0.25%: " + Long025,
+#                GlobalColor("LongBGC025"),
+#                Location.BOTTOM_RIGHT
+#            );
 
     plot Long050 = if hasPosition then entry * (1 + (p2 / 100)) else Double.NaN;
     Long050.SetDefaultColor(GlobalColor("LongBGC050"));
@@ -169,14 +170,14 @@ def hasPosition = entry > 0;
                 Location.BOTTOM_RIGHT
             );
 
-    plot Long075 = if hasPosition then entry * (1 + (p3 / 100)) else Double.NaN;
-    Long075.SetDefaultColor(GlobalColor("LongBGC075"));
-    AddLabel(
-                hasPosition,
-                "+0.75%: " + Long075,
-                GlobalColor("LongBGC075"),
-                Location.BOTTOM_RIGHT
-            );
+#    plot Long075 = if hasPosition then entry * (1 + (p3 / 100)) else Double.NaN;
+#    Long075.SetDefaultColor(GlobalColor("LongBGC075"));
+#    AddLabel(
+#                hasPosition,
+#                "+0.75%: " + Long075,
+#                GlobalColor("LongBGC075"),
+#                Location.BOTTOM_RIGHT
+#            );
 
     plot Long100 = if hasPosition then entry * (1 + (p4 / 100)) else Double.NaN;
     Long100.SetDefaultColor(GlobalColor("LongBGC100"));
@@ -187,14 +188,14 @@ def hasPosition = entry > 0;
                 Location.BOTTOM_RIGHT
             );
 
-    plot Long150 = if hasPosition then entry * (1 + (p5 / 100)) else Double.NaN;
-    Long150.SetDefaultColor(GlobalColor("LongBGC150"));
-    AddLabel(
-                hasPosition,
-                "+1.50%: " + Long150,
-                GlobalColor("LongBGC150"),
-                Location.BOTTOM_RIGHT
-            );
+#    plot Long150 = if hasPosition then entry * (1 + (p5 / 100)) else Double.NaN;
+#    Long150.SetDefaultColor(GlobalColor("LongBGC150"));
+#    AddLabel(
+#                hasPosition,
+#                "+1.50%: " + Long150,
+#                GlobalColor("LongBGC150"),
+#                Location.BOTTOM_RIGHT
+#            );
 
     plot Long200 = if hasPosition then entry * (1 + (p6 / 100)) else Double.NaN;
     Long200.SetDefaultColor(GlobalColor("LongBGC200"));
@@ -211,6 +212,15 @@ def hasPosition = entry > 0;
                 hasPosition,
                 "+3.00%: " + Long300,
                 GlobalColor("LongBGC300"),
+                Location.BOTTOM_RIGHT
+            );
+
+   plot Long500 = if hasPosition then entry * (1 + (p8 / 100)) else Double.NaN;
+    Long500.SetDefaultColor(GlobalColor("LongBGC500"));
+    AddLabel(
+                hasPosition,
+                "+5.00%: " + Long500,
+                GlobalColor("LongBGC500"),
                 Location.BOTTOM_RIGHT
             );
 
