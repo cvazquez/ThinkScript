@@ -36,7 +36,9 @@ def shortBlockList =
     GetSymbol() == "BDSX" or
     GetSymbol() == "HVII" or
     GetSymbol() == "ZIM" or
-    GetSymbol() == "IBRX";
+    GetSymbol() == "IBRX" or
+    GetSymbol() == "KLAR" or
+    GetSymbol() == "KYIV";
 
 
 #  Calculate ATR
@@ -75,4 +77,4 @@ plot scan = if close < yesterdaysClose then
             close < (yesterdaysClose - atrDelta)
             else
             # Short
-            priceChange > (atrDelta && !shortBlockList);
+            (priceChange > atrDelta) && !shortBlockList;
