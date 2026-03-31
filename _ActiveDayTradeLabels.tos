@@ -258,10 +258,13 @@ def hasPosition = entry > 0;
 # Entry Label
     AddLabel(hasPosition, "Entry: " + entry, Color.WHITE);
 
-    def profitLossPercentage = if hasPosition then -((close - entry) / entry) * 100 else 0;
+
+# Calculate profit/loss percentage and detect if it's a short or long position and gain or loss, and color the label accordingly (green for gain, red for loss, gray for breakeven)
+    def profitLossPercentage = if hasPosition then ((close - entry) / entry) * 100 else 0;
+    def isShort = if hasPosition then entry > close else no;
     AddLabel(
         hasPosition,
         "P/L%: " + Round(profitLossPercentage, 2) + "%",
-        if profitLossPercentage > 0 then Color.GREEN else if profitLossPercentage < 0 then Color.RED else Color.GRAY,
+        if profitLossPercentage > 0 then if isShort then Color.RED else Color.GREEN else if profitLossPercentage < 0 then if isShort then Color.GREEN else Color.RED else Color.GRAY,
         Location.TOP_LEFT
     );
