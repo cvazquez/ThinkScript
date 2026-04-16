@@ -1,0 +1,33 @@
+# FileName: _DailySMABubbles.tos
+# Study Name: _DailySMABubbles
+# Date: 20260416
+# Author: Carlos Vazquez
+
+# Daily SMAs with Bubbles
+# -------------------------
+# Displays the 5, 20, 50, 100, and 200-day Simple Moving Averages (SMAs) on the chart as Bubbles.
+# Each SMA is plotted with a distinct color for easy identification.
+
+input aggregation = AggregationPeriod.DAY;
+
+# Define and Plot SMAs
+plot SMA5 = Average(close(period = aggregation), 5);
+plot SMA20 = Average(close(period = aggregation), 20);
+plot SMA50 = Average(close(period = aggregation), 50);
+plot SMA100 = Average(close(period = aggregation), 100);
+plot SMA200 = Average(close(period = aggregation), 200);
+
+# Set Colors for visual distinction
+SMA5.SetDefaultColor(Color.WHITE);
+SMA20.SetDefaultColor(Color.YELLOW);
+SMA50.SetDefaultColor(Color.ORANGE);
+SMA100.SetDefaultColor(Color.RED);
+SMA200.SetDefaultColor(Color.CYAN);
+
+# Add Bubbles to the last bar
+# The condition "IsNaN(close[-1]) and !IsNaN(close)" ensures bubbles only appear at the current price
+AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA5, "5D", SMA5.TakeValueColor());
+AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA20, "20D", SMA20.TakeValueColor());
+AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA50, "50D", SMA50.TakeValueColor());
+AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA100, "100D", SMA100.TakeValueColor());
+AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA200, "200D", SMA200.TakeValueColor());
