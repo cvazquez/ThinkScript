@@ -1,0 +1,57 @@
+# FileName: _PercentagesBelowATH.tos
+# Study Name: _PercentagesBelowATH
+# Date: 20260419
+# Author: Carlos Vazquez
+
+# ATH Drawdown Lines & Bubbles
+# Draws lines at specific % drops below the All-Time High
+# Source: Gemini AI - Create a thinkscript that draws lines and bubbles for 2.5%, 5%, 7.5%, 10%, 15% and 20% below SPY ATH
+
+# Find the highest price in the chart's history
+plot ATH = HighestAll(high);
+ATH.SetDefaultColor(Color.GRAY);
+ATH.SetStyle(Curve.SHORT_DASH);
+
+# Calculate drawdown levels
+def d2_5 = ATH * 0.975;
+def d5_0 = ATH * 0.950;
+def d7_5 = ATH * 0.925;
+def d10 = ATH * 0.900;
+def d15 = ATH * 0.850;
+def d20 = ATH * 0.800;
+def d30 = ATH * 0.700;
+def d50 = ATH * 0.500;
+
+# Plot the drawdown lines
+plot Level2_5 = d2_5;
+plot Level5 = d5_0;
+plot Level7_5 = d7_5;
+plot Level10 = d10;
+plot Level15 = d15;
+plot Level20 = d20;
+plot Level30 = d30;
+plot Level50 = d50;
+
+# Set line colors and styles
+ATH.SetDefaultColor(Color.GRAY);
+Level2_5.SetDefaultColor(Color.YELLOW);
+Level5.SetDefaultColor(Color.ORANGE);
+Level7_5.SetDefaultColor(Color.ORANGE);
+Level10.SetDefaultColor(Color.RED);
+Level15.SetDefaultColor(Color.RED);
+Level20.SetDefaultColor(Color.DARK_RED);
+Level30.SetDefaultColor(Color.DARK_RED);
+level50.SetDefaultColor(Color.DARK_RED);
+
+# Add bubbles to label the lines at the most recent bar
+def lastBar = !IsNaN(close) and IsNaN(close[-1]);
+
+AddChartBubble(lastBar, ATH, "ATH (" + Round(ATH, 2) + ")", Color.GRAY);
+AddChartBubble(lastBar, d2_5, "-2.5% below ATH (" + Round(d2_5, 2) + ")", Color.YELLOW);
+AddChartBubble(lastBar, d5_0, "-5% below ATH (" + Round(d5_0, 2) + ")", Color.ORANGE);
+AddChartBubble(lastBar, d7_5, "-7.5% below ATH (" + Round(d7_5, 2) + ")", Color.ORANGE);
+AddChartBubble(lastBar, d10, "-10% below ATH (" + Round(d10, 2) + ")", Color.RED);
+AddChartBubble(lastBar, d15, "-15% below ATH (" + Round(d15, 2) + ")", Color.RED);
+AddChartBubble(lastBar, d20, "-20% below ATH (" + Round(d20, 2) + ")", Color.DARK_RED);
+AddChartBubble(lastBar, d30, "-30% below ATH (" + Round(d30, 2) + ")", Color.DARK_RED);
+AddChartBubble(lastBar, d50, "-50% below ATH (" + Round(d50, 2) + ")", Color.DARK_RED);
