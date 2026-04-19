@@ -26,8 +26,8 @@ SMA200.SetDefaultColor(Color.CYAN);
 
 # Add Bubbles to the last bar
 # The condition "IsNaN(close[-1]) and !IsNaN(close)" ensures bubbles only appear at the current price
-AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA5, "5D", SMA5.TakeValueColor());
-AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA20, "20D", SMA20.TakeValueColor());
-AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA50, "50D", SMA50.TakeValueColor());
-AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA100, "100D", SMA100.TakeValueColor());
-AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA200, "200D", SMA200.TakeValueColor());
+AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA5, "5 DAY SMA", SMA5.TakeValueColor());
+AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA20, "20 DAY SMA", SMA20.TakeValueColor());
+AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA50, "50 DAY SMA", SMA50.TakeValueColor());
+AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA100, "100 DAY SMA", SMA100.TakeValueColor());
+AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA200, "200 DAY SMA", SMA200.TakeValueColor());
