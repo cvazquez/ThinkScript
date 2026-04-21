@@ -10,6 +10,8 @@
 
 input aggregation = AggregationPeriod.DAY;
 
+def lastBar = !IsNaN(close) and IsNaN(close[-1]);
+
 # Define and Plot SMAs
 plot SMA5 = Average(close(period = aggregation), 5);
 plot SMA20 = Average(close(period = aggregation), 20);
@@ -26,8 +28,8 @@ SMA200.SetDefaultColor(Color.CYAN);
 
 # Add Bubbles to the last bar
 # The condition "IsNaN(close[-1]) and !IsNaN(close)" ensures bubbles only appear at the current price
-AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA5, "5 DAY SMA", SMA5.TakeValueColor());
-AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA20, "20 DAY SMA", SMA20.TakeValueColor());
-AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA50, "50 DAY SMA", SMA50.TakeValueColor());
-AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA100, "100 DAY SMA", SMA100.TakeValueColor());
-AddChartBubble(IsNaN(close[-1]) and !IsNaN(close), SMA200, "200 DAY SMA", SMA200.TakeValueColor());
+AddChartBubble(lastBar[50], SMA5, "5 DAY SMA", SMA5.TakeValueColor());
+AddChartBubble(lastBar[50], SMA20, "20 DAY SMA", SMA20.TakeValueColor());
+AddChartBubble(lastBar[50], SMA50, "50 DAY SMA", SMA50.TakeValueColor());
+AddChartBubble(lastBar[50], SMA100, "100 DAY SMA", SMA100.TakeValueColor());
+AddChartBubble(lastBar[50], SMA200, "200 DAY SMA", SMA200.TakeValueColor());
