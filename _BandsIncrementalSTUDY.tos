@@ -95,7 +95,7 @@ plot PreHighLine = if showPremarketLevels and !IsNaN(preHigh) then preHigh else 
 plot PreLowLine  = if showPremarketLevels and !IsNaN(preLow)  then preLow  else Double.NaN;
 
 PreHighLine.SetDefaultColor(Color.GREEN);
-PreHighLine.SetStyle(Curve.LONG_DASH);
+PreHighLine.SetStyle(Curve.SHORT_DASH);
 PreLowLine.SetDefaultColor(Color.MAGENTA);
 PreLowLine.SetStyle(Curve.LONG_DASH);
 
@@ -135,3 +135,17 @@ AddLabel(showBubblesAsLabels AND showPercentLevels, "-0.75%: " + round(pctNeg075
 AddLabel(showBubblesAsLabels AND showPercentLevels, "-1.00%: " + round(pctNeg100, 2), Color.RED, Location.BOTTOM_LEFT);
 AddLabel(showBubblesAsLabels AND showPercentLevels, "-1.25%: " + round(pctNeg125, 2), Color.RED, Location.BOTTOM_LEFT);
 AddLabel(showBubblesAsLabels AND showPercentLevels, "-1.50%: " + round(pctNeg150, 2), Color.RED, Location.BOTTOM_LEFT);
+
+
+# Add lines and bubbles for Yesterday's Low and High
+def prevHigh = high(period = AggregationPeriod.DAY)[1];
+def prevLow = low(period = AggregationPeriod.DAY)[1];
+plot PrevHighLine = if showPremarketLevels then prevHigh else Double.NaN;
+plot PrevLowLine = if showPremarketLevels then prevLow else Double.NaN;
+PrevHighLine.SetDefaultColor(Color.WHITE);
+PrevHighLine.SetStyle(Curve.SHORT_DASH);
+PrevLowLine.SetDefaultColor(Color.WHITE);
+PrevLowLine.SetStyle(Curve.LONG_DASH);
+AddChartBubble(showPremarketLevels and lastBar[bubbleOffsetBars], prevHigh, "YH: " + round(prevHigh, 2), Color.WHITE, no);
+AddChartBubble(showPremarketLevels and lastBar[bubbleOffsetBars], prevLow, "YL: " + round(prevLow, 2), Color.WHITE
+, no);
