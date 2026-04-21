@@ -139,3 +139,17 @@ AddLabel(showBubblesAsLabels AND showPercentLevels, "-2.25%: " + round(pctNeg225
 AddLabel(showBubblesAsLabels AND showPercentLevels, "-3.00%: " + round(pctNeg300, 2), Color.DARK_RED, Location.BOTTOM_LEFT);
 AddLabel(showBubblesAsLabels AND showPercentLevels, "-3.75%: " + round(pctNeg375, 2), Color.DARK_RED, Location.BOTTOM_LEFT);
 AddLabel(showBubblesAsLabels AND showPercentLevels, "-4.50%: " + round(pctNeg450, 2), Color.DARK_RED, Location.BOTTOM_LEFT);
+
+
+# Add lines and bubbles for Yesterday's Low and High
+def prevHigh = high(period = AggregationPeriod.DAY)[1];
+def prevLow = low(period = AggregationPeriod.DAY)[1];
+plot PrevHighLine = if showPremarketLevels then prevHigh else Double.NaN;
+plot PrevLowLine = if showPremarketLevels then prevLow else Double.NaN;
+PrevHighLine.SetDefaultColor(Color.WHITE);
+PrevHighLine.SetStyle(Curve.SHORT_DASH);
+PrevLowLine.SetDefaultColor(Color.WHITE);
+PrevLowLine.SetStyle(Curve.LONG_DASH);
+AddChartBubble(showPremarketLevels and lastBar[bubbleOffsetBars], prevHigh, "YH: " + round(prevHigh, 2), Color.WHITE, no);
+AddChartBubble(showPremarketLevels and lastBar[bubbleOffsetBars], prevLow, "YL: " + round(prevLow, 2), Color.WHITE
+, no);
