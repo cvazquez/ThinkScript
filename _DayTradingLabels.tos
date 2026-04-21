@@ -41,7 +41,7 @@ def indexList = GetSymbol() == "SPY" or
 def leveragedIndexList = GetSymbol() == "SQQQ" or
                     GetSymbol() == "TQQQ" or
                     GetSymbol() == "SPXL" or
-                    GetSymbol() == "SPXS";
+                    GetSymbol() == "SPXU";
 
 def showEquityPercentageLabels = !indexList and !leveragedIndexList;
 
@@ -193,39 +193,95 @@ def numBars = 32 * 60;
     );
 
 
+
 ## PERCENTAGES ABOVE CLOSE
+## Add labels, plot lines and bubbles for each percentage level above close
+
+    # Define colors for the percentage levels above close
+    def closePlus25Pct = round(previousDayClose * 1.25, 2);
+    DefineGlobalColor("closePlus25PctBGC", CreateColor(255, 0, 255));
+
+    def closePlus20Pct = round(previousDayClose * 1.20, 2);
+    DefineGlobalColor("closePlus20PctBGC", CreateColor(255, 70, 162));
+
+    def closePlus15Pct = round(previousDayClose * 1.15, 2);
+    DefineGlobalColor("closePlus15PctBGC", CreateColor(139, 0, 139));
+
+    def closePlus10Pct = round(previousDayClose * 1.10, 2);
+    DefineGlobalColor("closePlus10PctBGC", CreateColor(142, 69, 133));
+
+    def lastBar = !IsNaN(close) and IsNaN(close[-1]);
+
+
     ## 25% above close
         AddLabel(
             showEquityPercentageLabels,
-            "Close+25%: " + round(previousDayClose * 1.25, 2),
-            Color.MAGENTA,
+            "C+25%: " + closePlus25Pct,
+            GlobalColor("closePlus25PctBGC"),
             Location.TOP_RIGHT
         );
+        plot closePlus25Line = if showEquityPercentageLabels then closePlus25Pct else Double.NaN;
+        closePlus25Line.SetDefaultColor(GlobalColor("closePlus25PctBGC"));
+        AddChartBubble(
+            lastBar[50] and !IsNaN(closePlus25Pct) and !IsNaN(previousDayClose),
+            closePlus25Pct,
+           "C+25%: " + closePlus25Pct,
+           GlobalColor("closePlus25PctBGC"),
+           yes
+        );
+
 
     ## 20% above close
         AddLabel(
             showEquityPercentageLabels,
-            "Close+20%: " + round(previousDayClose * 1.2, 2),
-            Color.MAGENTA,
+            "C+20%: " + closePlus20Pct,
+            GlobalColor("closePlus20PctBGC"),
             Location.TOP_RIGHT
+        );
+        plot closePlus20Line = if showEquityPercentageLabels then closePlus20Pct else Double.NaN;
+        closePlus20Line.SetDefaultColor(GlobalColor("closePlus20PctBGC"));
+        AddChartBubble(
+            lastBar[50] and !IsNaN(closePlus20Pct) and !IsNaN(previousDayClose),
+            closePlus20Pct,
+            "C+20%: " + closePlus20Pct,
+            GlobalColor("closePlus20PctBGC"),
+            yes
         );
 
     ## 15% above close
         AddLabel(
             showEquityPercentageLabels,
-            "Close+15%: " + round(previousDayClose * 1.15, 2),
-            Color.MAGENTA,
+            "C+15%: " + closePlus15Pct,
+            GlobalColor("closePlus15PctBGC"),
             Location.TOP_RIGHT
         );
+        plot closePlus15Line = if showEquityPercentageLabels then closePlus15Pct else Double.NaN;
+        closePlus15Line.SetDefaultColor(GlobalColor("closePlus15PctBGC"));
+        AddChartBubble(
+            lastBar[50] and !IsNaN(closePlus15Pct) and !IsNaN(previousDayClose),
+            closePlus15Pct,
+            "C+15%: " + closePlus15Pct,
+            GlobalColor("closePlus15PctBGC"),
+            yes
+        );
+
 
     ## 10% above close
         AddLabel(
             showEquityPercentageLabels,
-            "Close+10%: " + round(previousDayClose * 1.1, 2),
-            Color.MAGENTA,
+            "C+10%: " + closePlus10Pct,
+            GlobalColor("closePlus10PctBGC"),
             Location.TOP_RIGHT
         );
-
+        plot closePlus10Line = if showEquityPercentageLabels then closePlus10Pct else Double.NaN;
+        closePlus10Line.SetDefaultColor(GlobalColor("closePlus10PctBGC"));
+        AddChartBubble(
+            lastBar[50] and !IsNaN(closePlus10Pct) and !IsNaN(previousDayClose),
+            closePlus10Pct,
+            "C+10%: " + closePlus10Pct,
+            GlobalColor("closePlus10PctBGC"),
+            yes
+        );
 
 ################# LONG LABELS ##################
 
@@ -310,36 +366,87 @@ def numBars = 32 * 60;
 
 
 ## PERCENTAGES BELOW CLOSE
+## Add labels, plot lines and bubbles for each percentage level below close
+
+    def closeMinus25Pct = round(previousDayClose * 0.75, 2);
+    DefineGlobalColor("closeMinus25PctBGC", CreateColor(0, 255, 255));
+
+    def closeMinus20Pct = round(previousDayClose * 0.80, 2);
+    DefineGlobalColor("closeMinus20PctBGC", CreateColor(224, 255, 255));
+
+    def closeMinus15Pct = round(previousDayClose * 0.85, 2);
+    DefineGlobalColor("closeMinus15PctBGC", CreateColor(0, 139, 139));
+
+    def closeMinus10Pct = round(previousDayClose * 0.90, 2);
+    DefineGlobalColor("closeMinus10PctBGC", CreateColor(135, 206, 235));
+
     ## 25% below close
         AddLabel(
             showEquityPercentageLabels,
-            "Close-25%: " + round(previousDayClose * 0.75, 2),
-            Color.CYAN,
+            "C-25%: " + closeMinus25Pct,
+            GlobalColor("closeMinus25PctBGC"),
             Location.BOTTOM_RIGHT
+        );
+        plot closeMinus25Line = if showEquityPercentageLabels then closeMinus25Pct else Double.NaN;
+        closeMinus25Line.SetDefaultColor(GlobalColor("closeMinus25PctBGC"));
+        AddChartBubble(
+            lastBar[50] and !IsNaN(closeMinus25Pct) and !IsNaN(previousDayClose),
+            closeMinus25Pct,
+           "C-25%: " + closeMinus25Pct,
+           GlobalColor("closeMinus25PctBGC"),
+           yes
         );
 
     ## 20% below close
         AddLabel(
             showEquityPercentageLabels,
-            "Close-20%: " + round(previousDayClose * 0.80, 2),
-            Color.CYAN,
+            "C-20%: " + closeMinus20Pct,
+            GlobalColor("closeMinus20PctBGC"),
             Location.BOTTOM_RIGHT
+        );
+        plot closeMinus20Line = if showEquityPercentageLabels then closeMinus20Pct else Double.NaN;
+        closeMinus20Line.SetDefaultColor(GlobalColor("closeMinus20PctBGC"));
+        AddChartBubble(
+            lastBar[50] and !IsNaN(closeMinus20Pct) and !IsNaN(previousDayClose),
+            closeMinus20Pct,
+           "C-20%: " + closeMinus20Pct,
+           GlobalColor("closeMinus20PctBGC"),
+           yes
         );
 
     ## 15% below close
         AddLabel(
             showEquityPercentageLabels,
-            "Close-15%: " + round(previousDayClose * 0.85, 2),
-            Color.CYAN,
+            "C-15%: " + closeMinus15Pct,
+            GlobalColor("closeMinus15PctBGC"),
             Location.BOTTOM_RIGHT
         );
+        plot closeMinus15Line = if showEquityPercentageLabels then closeMinus15Pct else Double.NaN;
+        closeMinus15Line.SetDefaultColor(GlobalColor("closeMinus15PctBGC"));
+        AddChartBubble(
+            lastBar[50] and !IsNaN(closeMinus15Pct) and !IsNaN(previousDayClose),
+            closeMinus15Pct,
+           "C-15%: " + closeMinus15Pct,
+           GlobalColor("closeMinus15PctBGC"),
+           yes
+        );
+
 
     ## 10% below close
         AddLabel(
             showEquityPercentageLabels,
-            "Close-10%: " + round(previousDayClose * 0.90, 2),
-            Color.CYAN,
+            "C-10%: " + closeMinus10Pct,
+            GlobalColor("closeMinus10PctBGC"),
             Location.BOTTOM_RIGHT
+        );
+        plot closeMinus10Line = if showEquityPercentageLabels then closeMinus10Pct else Double.NaN;
+        closeMinus10Line.SetDefaultColor(GlobalColor("closeMinus10PctBGC"));
+        AddChartBubble(
+            lastBar[50] and !IsNaN(closeMinus10Pct) and !IsNaN(previousDayClose),
+            closeMinus10Pct,
+           "C-10%: " + closeMinus10Pct,
+           GlobalColor("closeMinus10PctBGC"),
+           yes
         );
 
 
@@ -347,7 +454,7 @@ def numBars = 32 * 60;
         ## 9% below close
         AddLabel(
             leveragedIndexList,
-            "Close-9%: " + round(previousDayClose * 0.91, 2),
+            "C-9%: " + round(previousDayClose * 0.91, 2),
             Color.CYAN,
             Location.BOTTOM_RIGHT
         );
@@ -355,7 +462,7 @@ def numBars = 32 * 60;
         ## 6% below close
         AddLabel(
             leveragedIndexList,
-            "Close-6%: " + round(previousDayClose * 0.94, 2),
+            "C-6%: " + round(previousDayClose * 0.94, 2),
             Color.CYAN,
             Location.BOTTOM_RIGHT
         );
@@ -363,7 +470,7 @@ def numBars = 32 * 60;
         ## 3% below close
         AddLabel(
             leveragedIndexList,
-            "Close-3%: " + round(previousDayClose * 0.97, 2),
+            "C-3%: " + round(previousDayClose * 0.97, 2),
             Color.CYAN,
             Location.BOTTOM_RIGHT
         );
@@ -373,7 +480,7 @@ def numBars = 32 * 60;
         ## 1% below close
         AddLabel(
             indexList,
-            "Close-1%: " + round(previousDayClose * 0.99, 2),
+            "C-1%: " + round(previousDayClose * 0.99, 2),
             Color.CYAN,
             Location.BOTTOM_RIGHT
         );
@@ -381,7 +488,7 @@ def numBars = 32 * 60;
         ## 2% below close
         AddLabel(
             indexList,
-            "Close-2%: " + round(previousDayClose * 0.98, 2),
+            "C-2%: " + round(previousDayClose * 0.98, 2),
             Color.CYAN,
             Location.BOTTOM_RIGHT
         );
@@ -389,7 +496,7 @@ def numBars = 32 * 60;
         ## 3% below close
         AddLabel(
             indexList,
-            "Close-3%: " + round(previousDayClose * 0.97, 2),
+            "C-3%: " + round(previousDayClose * 0.97, 2),
             Color.CYAN,
             Location.BOTTOM_RIGHT
         );
