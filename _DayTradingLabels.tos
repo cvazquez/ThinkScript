@@ -105,7 +105,7 @@ def numBars = 32 * 60;
     def prevClosePlusATRShort = previousDayClose + ATR;
     AddLabel (
         yes,
-        " ATR+: " + round(prevClosePlusATRShort, 2),
+        " ATR: " + round(prevClosePlusATRShort, 2),
         Color.PINK,
         Location.TOP_LEFT
     );
@@ -114,39 +114,24 @@ def numBars = 32 * 60;
 ## Percentages Over ATR
     DefineGlobalColor("overATRBGC", CreateColor(255, 126, 156));
 
-    # 1% over ATR
-    def onePercent = 1.00;
-    def percent1 = 1 + (onePercent / 100);
-    def atrPlus1pct = prevClosePlusATRShort * percent1;
+    # Add a label for 1.5 times ATR plus previous day's close
+    def onePointFive = 1.50;
+    def atrPlus1_5Xs = previousDayClose + (ATR * onePointFive);
 
     AddLabel(
         yes,
-        "atr+" + onePercent + "% : " + Round(atrPlus1pct, 2),
+        "atr(" + onePointFive + ") : " + Round(atrPlus1_5Xs, 2),
         GlobalColor("overATRBGC"),
         Location.TOP_LEFT
     );
 
-
-    # 2% over ATR
-    def twoPercent = 2.00;
-    def percent2 = 1 + (twoPercent / 100);
-    def atrPlus2pct = prevClosePlusATRShort * percent2;
+    # Add a label for 2 times ATR plus previous day's close
+    def twoXs = 2.00;
+    def atrPlus2Xs = previousDayClose + (ATR * twoXs);
 
     AddLabel(
         yes,
-        "atr+" + twoPercent + "% : " + Round(atrPlus2pct, 2),
-        GlobalColor("overATRBGC"),
-        Location.TOP_LEFT
-    );
-
-    # 3% over ATR
-    def threePercent = 3.00;
-    def percent3 = 1 + (threePercent / 100);
-    def atrPlus3pct = prevClosePlusATRShort * percent3;
-
-    AddLabel(
-        yes,
-        "atr+" + threePercent + "% : " + Round(atrPlus3pct, 2),
+        "atr(" + twoXs + ") : " + Round(atrPlus2Xs, 2),
         GlobalColor("overATRBGC"),
         Location.TOP_LEFT
     );
@@ -187,7 +172,7 @@ def numBars = 32 * 60;
     # Plot the 32-hour high line
     AddLabel(
         yes,
-        "32H High: " + highOfLast32Hours + " : +1%=" + OnePercentOver,
+        "32HH: " + highOfLast32Hours + " : +1%=" + OnePercentOver,
         GlobalColor("highOfDayBGC"),
         Location.TOP_LEFT
     );
@@ -196,37 +181,30 @@ def numBars = 32 * 60;
 
 ## PERCENTAGES ABOVE CLOSE
 ## Add labels, plot lines and bubbles for each percentage level above close
-
-    # Define colors for the percentage levels above close
     def closePlus25Pct = round(previousDayClose * 1.25, 2);
-    DefineGlobalColor("closePlus25PctBGC", CreateColor(255, 0, 255));
-
     def closePlus20Pct = round(previousDayClose * 1.20, 2);
-    DefineGlobalColor("closePlus20PctBGC", CreateColor(255, 70, 162));
-
     def closePlus15Pct = round(previousDayClose * 1.15, 2);
-    DefineGlobalColor("closePlus15PctBGC", CreateColor(139, 0, 139));
-
     def closePlus10Pct = round(previousDayClose * 1.10, 2);
-    DefineGlobalColor("closePlus10PctBGC", CreateColor(142, 69, 133));
 
     def lastBar = !IsNaN(close) and IsNaN(close[-1]);
 
+    # Define colors for the percentage levels above close
+    DefineGlobalColor("closePlusPctBGC", CreateColor(255, 70, 162));
 
     ## 25% above close
         AddLabel(
             showEquityPercentageLabels,
             "C+25%: " + closePlus25Pct,
-            GlobalColor("closePlus25PctBGC"),
+            GlobalColor("closePlusPctBGC"),
             Location.TOP_RIGHT
         );
         plot closePlus25Line = if showEquityPercentageLabels then closePlus25Pct else Double.NaN;
-        closePlus25Line.SetDefaultColor(GlobalColor("closePlus25PctBGC"));
+        closePlus25Line.SetDefaultColor(GlobalColor("closePlusPctBGC"));
         AddChartBubble(
             lastBar[50] and !IsNaN(closePlus25Pct) and !IsNaN(previousDayClose),
             closePlus25Pct,
            "C+25%: " + closePlus25Pct,
-           GlobalColor("closePlus25PctBGC"),
+           GlobalColor("closePlusPctBGC"),
            yes
         );
 
@@ -235,16 +213,16 @@ def numBars = 32 * 60;
         AddLabel(
             showEquityPercentageLabels,
             "C+20%: " + closePlus20Pct,
-            GlobalColor("closePlus20PctBGC"),
+            GlobalColor("closePlusPctBGC"),
             Location.TOP_RIGHT
         );
         plot closePlus20Line = if showEquityPercentageLabels then closePlus20Pct else Double.NaN;
-        closePlus20Line.SetDefaultColor(GlobalColor("closePlus20PctBGC"));
+        closePlus20Line.SetDefaultColor(GlobalColor("closePlusPctBGC"));
         AddChartBubble(
             lastBar[50] and !IsNaN(closePlus20Pct) and !IsNaN(previousDayClose),
             closePlus20Pct,
             "C+20%: " + closePlus20Pct,
-            GlobalColor("closePlus20PctBGC"),
+            GlobalColor("closePlusPctBGC"),
             yes
         );
 
@@ -252,16 +230,16 @@ def numBars = 32 * 60;
         AddLabel(
             showEquityPercentageLabels,
             "C+15%: " + closePlus15Pct,
-            GlobalColor("closePlus15PctBGC"),
+            GlobalColor("closePlusPctBGC"),
             Location.TOP_RIGHT
         );
         plot closePlus15Line = if showEquityPercentageLabels then closePlus15Pct else Double.NaN;
-        closePlus15Line.SetDefaultColor(GlobalColor("closePlus15PctBGC"));
+        closePlus15Line.SetDefaultColor(GlobalColor("closePlusPctBGC"));
         AddChartBubble(
             lastBar[50] and !IsNaN(closePlus15Pct) and !IsNaN(previousDayClose),
             closePlus15Pct,
             "C+15%: " + closePlus15Pct,
-            GlobalColor("closePlus15PctBGC"),
+            GlobalColor("closePlusPctBGC"),
             yes
         );
 
@@ -270,16 +248,16 @@ def numBars = 32 * 60;
         AddLabel(
             showEquityPercentageLabels,
             "C+10%: " + closePlus10Pct,
-            GlobalColor("closePlus10PctBGC"),
+            GlobalColor("closePlusPctBGC"),
             Location.TOP_RIGHT
         );
         plot closePlus10Line = if showEquityPercentageLabels then closePlus10Pct else Double.NaN;
-        closePlus10Line.SetDefaultColor(GlobalColor("closePlus10PctBGC"));
+        closePlus10Line.SetDefaultColor(GlobalColor("closePlusPctBGC"));
         AddChartBubble(
             lastBar[50] and !IsNaN(closePlus10Pct) and !IsNaN(previousDayClose),
             closePlus10Pct,
             "C+10%: " + closePlus10Pct,
-            GlobalColor("closePlus10PctBGC"),
+            GlobalColor("closePlusPctBGC"),
             yes
         );
 
@@ -293,36 +271,20 @@ def numBars = 32 * 60;
 ## Percentages Under ATR
     DefineGlobalColor("underATRBGC", CreateColor(211, 211, 211));
 
-    # 1% under ATR
-    def onePercentUnder = 1 - (onePercent / 100);
-    def atrMinus1pct = prevCloseMinusATRLong * onePercentUnder;
-
+    # Add a label for 1.5 times ATR minus previous day's close
+    def atrMinus1_5Xs = previousDayClose - (ATR * onePointFive);
     AddLabel(
         yes,
-        "atr-" + onePercent + "% : " + Round(atrMinus1pct, 2),
+        "atr(" + onePointFive + ") : " + Round(atrMinus1_5Xs, 2),
         GlobalColor("underATRBGC"),
         Location.BOTTOM_LEFT
     );
 
-
-    # 2% under ATR
-    def twoPercentUnder = 1 - (twoPercent / 100);
-    def atrMinus2pct = prevCloseMinusATRLong * twoPercentUnder;
-
+    # Add a label for 2 times ATR minus previous day's close
+    def atrMinus2Xs = previousDayClose - (ATR * twoXs);
     AddLabel(
         yes,
-        "atr-" + twoPercent + "% : " + Round(atrMinus2pct, 2),
-        GlobalColor("underATRBGC"),
-        Location.BOTTOM_LEFT
-    );
-
-    # 3% under ATR
-    def threePercentUnder = 1 - (threePercent / 100);
-    def atrMinus3pct = prevCloseMinusATRLong * threePercentUnder;
-
-    AddLabel(
-        yes,
-        "atr-" + threePercent + "% : " + Round(atrMinus3pct, 2),
+        "atr(" + twoXs + ") : " + Round(atrMinus2Xs, 2),
         GlobalColor("underATRBGC"),
         Location.BOTTOM_LEFT
     );
