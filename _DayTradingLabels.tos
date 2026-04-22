@@ -185,6 +185,8 @@ def numBars = 32 * 60;
     def closePlus20Pct = round(previousDayClose * 1.20, 2);
     def closePlus15Pct = round(previousDayClose * 1.15, 2);
     def closePlus10Pct = round(previousDayClose * 1.10, 2);
+    def closePlus5Pct = round(previousDayClose * 1.05, 2);
+
 
     def lastBar = !IsNaN(close) and IsNaN(close[-1]);
 
@@ -257,6 +259,17 @@ def numBars = 32 * 60;
             lastBar[50] and !IsNaN(closePlus10Pct) and !IsNaN(previousDayClose),
             closePlus10Pct,
             "C+10%: " + closePlus10Pct,
+            GlobalColor("closePlusPctBGC"),
+            yes
+        );
+
+    ## 5% above close
+        plot closePlus5Line = if showEquityPercentageLabels then closePlus5Pct else Double.NaN;
+        closePlus5Line.SetDefaultColor(GlobalColor("closePlusPctBGC"));
+        AddChartBubble(
+            lastBar[50] and !IsNaN(closePlus5Pct) and !IsNaN(previousDayClose),
+            closePlus5Pct,
+            "C+5%: " + closePlus5Pct,
             GlobalColor("closePlusPctBGC"),
             yes
         );
