@@ -138,14 +138,16 @@ def numBars = 32 * 60;
 
 
 ## DTR SHORT
-    def hdtr = todaysLow + ATR;
+    def ldtr = todaysHigh - ATR;
 
     AddLabel(
         Yes,
-        "DTR: " + round(hdtr, 2),
-        Color.Yellow,
+        "DTR: " + round(ldtr, 2),
+        Color.RED,
         Location.TOP_LEFT
     );
+
+
 
 ## HIGH OF DAY (SHORT)
     DefineGlobalColor("highOfDayBGC", CreateColor(144, 213, 255));
@@ -304,12 +306,14 @@ def numBars = 32 * 60;
 
 
 ## DTR LONG
-    def ldtr = todaysHigh - ATR;
+    def todaysLow_ = if dayStart then low else min(low, todaysLow_[1]);
+
+    def hdtr = todaysLow_ + ATR;
 
     AddLabel(
         Yes,
-        "DTR: " + round(ldtr, 2),
-        Color.RED,
+        "DTR: " + round(hdtr, 2),
+        Color.Yellow,
         Location.BOTTOM_LEFT
     );
 
