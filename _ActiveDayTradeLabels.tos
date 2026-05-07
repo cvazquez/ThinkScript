@@ -230,34 +230,34 @@ def hasPosition = entry > 0;
 
     AddLabel(yes, "H-ATR: " + Round(highATR, 2), Color.GREEN, Location.TOP_LEFT);
 
+    AddLabel(yes, "L-ATR: " + Round(lowATR, 2), Color.GREEN, Location.BOTTOM_LEFT);
+
 
 ## DTR SHORT
     def basePeriod = AggregationPeriod.DAY;
-    def todaysHigh = Highest(high(period = baseperiod)[0], 1);
-    def ldtr = todaysHigh - ATR;
+    def dayStart = GetDay() != GetDay()[1];  # Identifies the start of a new day
+    #def todaysLow_ = if dayStart then low else min(low, todaysLow_[1]);
+    def todaysLow_ = Lowest(low(period =baseperiod)[0], 1);
+    def hdtr = todaysLow_ + ATR;
 
     AddLabel(
         Yes,
-        "DTR: " + round(ldtr, 2),
+        "DTR: " + round(hdtr, 2),
         Color.RED,
         Location.TOP_LEFT
     );
 
 
 ## DTR LONG
-    def dayStart = GetDay() != GetDay()[1];  # Identifies the start of a new day
-    def todaysLow_ = if dayStart then low else min(low, todaysLow_[1]);
-    def hdtr = todaysLow_ + ATR;
+    def todaysHigh = Highest(high(period = baseperiod)[0], 1);
+    def ldtr = todaysHigh - ATR;
 
     AddLabel(
         Yes,
-        "DTR: " + round(hdtr, 2),
-        Color.Yellow,
+        "DTR: " + round(ldtr, 2),
+        Color.YELLOW,
         Location.BOTTOM_LEFT
     );
-
-
-    AddLabel(yes, "L-ATR: " + Round(lowATR, 2), Color.GREEN, Location.BOTTOM_LEFT);
 
 
 ## CLOSING PRICE
