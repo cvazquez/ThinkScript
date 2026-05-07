@@ -35,8 +35,12 @@ def DR = Today_High - Today_Low;
 plot DailyClose = close(period=”DAY”)[1];
 plot hatr = dailyclose + ATR;
 plot latr = dailyclose - ATR;
+
 plot hdtr = Today_Low + ATR;
+hdtr.SetDefaultColor(Color.RED);
+
 plot ldtr = Today_High - ATR;
+ldtr.SetDefaultColor(Color.YELLOW);
 
 # AddLabel(visible = Yes, text = "DTR: " + round(DR/ATR, 2)*100 + "%", color = Color.LIGHT_GRAY);
 AddLabel(
