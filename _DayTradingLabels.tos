@@ -105,7 +105,7 @@ def numBars = 32 * 60;
     def prevClosePlusATRShort = previousDayClose + ATR;
     AddLabel (
         yes,
-        " ATR: " + round(prevClosePlusATRShort, 2),
+        "C+ATR: " + round(prevClosePlusATRShort, 2),
         Color.PINK,
         Location.TOP_LEFT
     );
@@ -132,6 +132,17 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "atr(" + twoXs + ") : " + Round(atrPlus2Xs, 2),
+        GlobalColor("overATRBGC"),
+        Location.TOP_LEFT
+    );
+
+    # Add a label for 2.5 times ATR plus previous day's close
+    def twoPointFiveXs = 2.50;
+    def atrPlus2_5Xs = previousDayClose + (ATR * twoPointFiveXs);
+
+    AddLabel(
+        yes,
+        "atr(" + twoPointFiveXs + ") : " + Round(atrPlus2_5Xs, 2),
         GlobalColor("overATRBGC"),
         Location.TOP_LEFT
     );
@@ -164,21 +175,6 @@ def numBars = 32 * 60;
         GlobalColor("highOfDayBGC"),
         Location.TOP_LEFT
     );
-
-
-## 32 HOUR LOW OF DAY
-    # Get the high over the specified number of bars
-    def highOfLast32Hours = Highest(high, numBars);
-    def OnePercentOver = round(highOfLast32Hours * 1.01, 2);
-
-    # Plot the 32-hour high line
-    AddLabel(
-        yes,
-        "32HH: " + highOfLast32Hours + " : +1%=" + OnePercentOver,
-        GlobalColor("highOfDayBGC"),
-        Location.TOP_LEFT
-    );
-
 
 
 ## PERCENTAGES ABOVE CLOSE
@@ -280,7 +276,7 @@ def numBars = 32 * 60;
 
 ## ATR LONG
     def prevCloseMinusATRLong = previousDayClose - ATR;
-    AddLabel (yes, " ATR-: " + round(prevCloseMinusATRLong, 2) , Color.GRAY, Location.BOTTOM_LEFT);
+    AddLabel (yes, "C-ATR: " + round(prevCloseMinusATRLong, 2) , Color.GRAY, Location.BOTTOM_LEFT);
 
 
 ## Percentages Under ATR
@@ -300,6 +296,15 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "atr(" + twoXs + ") : " + Round(atrMinus2Xs, 2),
+        GlobalColor("underATRBGC"),
+        Location.BOTTOM_LEFT
+    );
+
+    # Add a label for 2.5 times ATR minus previous day's close
+    def atrMinus2_5Xs = previousDayClose - (ATR * twoPointFiveXs);
+    AddLabel(
+        yes,
+        "atr(" + twoPointFiveXs + ") : " + Round(atrMinus2_5Xs, 2),
         GlobalColor("underATRBGC"),
         Location.BOTTOM_LEFT
     );
@@ -327,18 +332,6 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "L: " + round(dailyLow, 2),
-        Color.WHITE,
-        Location.BOTTOM_LEFT
-    );
-
-## 32 HOUR LOW OF DAY
-    # Get the low over the specified number of bars
-    def lowOfLast32Hours = if low < dailyLow then low else dailyLow;
-    def onePercentUnderLow = round(lowOfLast32Hours * .99, 2);
-
-    AddLabel(
-        yes,
-        "32H Low: " + lowOfLast32Hours + " : -1%=" + onePercentUnderLow,
         Color.WHITE,
         Location.BOTTOM_LEFT
     );
