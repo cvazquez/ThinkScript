@@ -187,6 +187,7 @@ def numBars = 32 * 60;
 
 
     def lastBar = !IsNaN(close) and IsNaN(close[-1]);
+    def lastBarBubbles = lastBar[25];
 
     # Define colors for the percentage levels above close
     DefineGlobalColor("closePlusPctBGC", CreateColor(255, 70, 162));
@@ -201,7 +202,7 @@ def numBars = 32 * 60;
         plot closePlus25Line = if showEquityPercentageLabels then closePlus25Pct else Double.NaN;
         closePlus25Line.SetDefaultColor(GlobalColor("closePlusPctBGC"));
         AddChartBubble(
-            lastBar[50] and !IsNaN(closePlus25Pct) and !IsNaN(previousDayClose),
+            lastBarBubbles and !IsNaN(closePlus25Pct) and !IsNaN(previousDayClose),
             closePlus25Pct,
            "C+25%: " + closePlus25Pct,
            GlobalColor("closePlusPctBGC"),
@@ -219,7 +220,7 @@ def numBars = 32 * 60;
         plot closePlus20Line = if showEquityPercentageLabels then closePlus20Pct else Double.NaN;
         closePlus20Line.SetDefaultColor(GlobalColor("closePlusPctBGC"));
         AddChartBubble(
-            lastBar[50] and !IsNaN(closePlus20Pct) and !IsNaN(previousDayClose),
+            lastBarBubbles and !IsNaN(closePlus20Pct) and !IsNaN(previousDayClose),
             closePlus20Pct,
             "C+20%: " + closePlus20Pct,
             GlobalColor("closePlusPctBGC"),
@@ -236,7 +237,7 @@ def numBars = 32 * 60;
         plot closePlus15Line = if showEquityPercentageLabels then closePlus15Pct else Double.NaN;
         closePlus15Line.SetDefaultColor(GlobalColor("closePlusPctBGC"));
         AddChartBubble(
-            lastBar[50] and !IsNaN(closePlus15Pct) and !IsNaN(previousDayClose),
+            lastBarBubbles and !IsNaN(closePlus15Pct) and !IsNaN(previousDayClose),
             closePlus15Pct,
             "C+15%: " + closePlus15Pct,
             GlobalColor("closePlusPctBGC"),
@@ -254,7 +255,7 @@ def numBars = 32 * 60;
         plot closePlus10Line = if showEquityPercentageLabels then closePlus10Pct else Double.NaN;
         closePlus10Line.SetDefaultColor(GlobalColor("closePlusPctBGC"));
         AddChartBubble(
-            lastBar[50] and !IsNaN(closePlus10Pct) and !IsNaN(previousDayClose),
+            lastBarBubbles and !IsNaN(closePlus10Pct) and !IsNaN(previousDayClose),
             closePlus10Pct,
             "C+10%: " + closePlus10Pct,
             GlobalColor("closePlusPctBGC"),
@@ -265,7 +266,7 @@ def numBars = 32 * 60;
         plot closePlus5Line = if showEquityPercentageLabels then closePlus5Pct else Double.NaN;
         closePlus5Line.SetDefaultColor(GlobalColor("closePlusPctBGC"));
         AddChartBubble(
-            lastBar[50] and !IsNaN(closePlus5Pct) and !IsNaN(previousDayClose),
+            lastBarBubbles and !IsNaN(closePlus5Pct) and !IsNaN(previousDayClose),
             closePlus5Pct,
             "C+5%: " + closePlus5Pct,
             GlobalColor("closePlusPctBGC"),
@@ -362,7 +363,7 @@ def numBars = 32 * 60;
         plot closeMinus25Line = if showEquityPercentageLabels then closeMinus25Pct else Double.NaN;
         closeMinus25Line.SetDefaultColor(GlobalColor("closeMinus25PctBGC"));
         AddChartBubble(
-            lastBar[50] and !IsNaN(closeMinus25Pct) and !IsNaN(previousDayClose),
+            lastBarBubbles and !IsNaN(closeMinus25Pct) and !IsNaN(previousDayClose),
             closeMinus25Pct,
            "C-25%: " + closeMinus25Pct,
            GlobalColor("closeMinus25PctBGC"),
@@ -379,7 +380,7 @@ def numBars = 32 * 60;
         plot closeMinus20Line = if showEquityPercentageLabels then closeMinus20Pct else Double.NaN;
         closeMinus20Line.SetDefaultColor(GlobalColor("closeMinus20PctBGC"));
         AddChartBubble(
-            lastBar[50] and !IsNaN(closeMinus20Pct) and !IsNaN(previousDayClose),
+            lastBarBubbles and !IsNaN(closeMinus20Pct) and !IsNaN(previousDayClose),
             closeMinus20Pct,
            "C-20%: " + closeMinus20Pct,
            GlobalColor("closeMinus20PctBGC"),
@@ -396,7 +397,7 @@ def numBars = 32 * 60;
         plot closeMinus15Line = if showEquityPercentageLabels then closeMinus15Pct else Double.NaN;
         closeMinus15Line.SetDefaultColor(GlobalColor("closeMinus15PctBGC"));
         AddChartBubble(
-            lastBar[50] and !IsNaN(closeMinus15Pct) and !IsNaN(previousDayClose),
+            lastBarBubbles and !IsNaN(closeMinus15Pct) and !IsNaN(previousDayClose),
             closeMinus15Pct,
            "C-15%: " + closeMinus15Pct,
            GlobalColor("closeMinus15PctBGC"),
@@ -414,7 +415,7 @@ def numBars = 32 * 60;
         plot closeMinus10Line = if showEquityPercentageLabels then closeMinus10Pct else Double.NaN;
         closeMinus10Line.SetDefaultColor(GlobalColor("closeMinus10PctBGC"));
         AddChartBubble(
-            lastBar[50] and !IsNaN(closeMinus10Pct) and !IsNaN(previousDayClose),
+            lastBarBubbles and !IsNaN(closeMinus10Pct) and !IsNaN(previousDayClose),
             closeMinus10Pct,
            "C-10%: " + closeMinus10Pct,
            GlobalColor("closeMinus10PctBGC"),
