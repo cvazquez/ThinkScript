@@ -422,6 +422,20 @@ def numBars = 32 * 60;
            yes
         );
 
+    ## 5% below close
+        def closeMinus5Pct = round(previousDayClose * 0.95, 2);
+        DefineGlobalColor("closeMinus5PctBGC", CreateColor(176, 224, 230));
+
+        plot closeMinus5Line = if showEquityPercentageLabels then closeMinus5Pct else Double.NaN;
+        closeMinus5Line.SetDefaultColor(GlobalColor("closeMinus5PctBGC"));
+        AddChartBubble(
+            lastBarBubbles and !IsNaN(closeMinus5Pct) and !IsNaN(previousDayClose),
+            closeMinus5Pct,
+           "C-5%: " + closeMinus5Pct,
+           GlobalColor("closeMinus5PctBGC"),
+           yes
+        );
+
 
     ## Leveraged Indexes - 3, 6 and 9% below close
         ## 9% below close
