@@ -149,15 +149,16 @@ def numBars = 32 * 60;
 
 
 ## DTR SHORT
-    def ldtr = todaysHigh - ATR;
+    def todaysLow_ = if dayStart then low else min(low, todaysLow_[1]);
+
+    def hdtr = todaysLow_ + ATR;
 
     AddLabel(
         Yes,
-        "DTR: " + round(ldtr, 2),
+        "DTR: " + round(hdtr, 2),
         Color.RED,
         Location.TOP_LEFT
     );
-
 
 
 ## HIGH OF DAY (SHORT)
@@ -312,16 +313,15 @@ def numBars = 32 * 60;
 
 
 ## DTR LONG
-    def todaysLow_ = if dayStart then low else min(low, todaysLow_[1]);
-
-    def hdtr = todaysLow_ + ATR;
+    def ldtr = todaysHigh - ATR;
 
     AddLabel(
         Yes,
-        "DTR: " + round(hdtr, 2),
-        Color.Yellow,
+        "DTR: " + round(ldtr, 2),
+        Color.YELLOW,
         Location.BOTTOM_LEFT
     );
+
 
 ## LOW OF DAY
     def dailyLow = if dayStart then low else min(low, dailyLow[1]);  # Tracks the low for the day
