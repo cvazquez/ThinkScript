@@ -177,6 +177,16 @@ def numBars = 32 * 60;
         Location.TOP_LEFT
     );
 
+## High of day plus ATR (SHORT)
+    def highPlusATR = dailyHigh + ATR;
+
+    AddLabel(
+        yes,
+        "H+ATR: " + round(highPlusATR, 2),
+        CreateColor(144, 213, 255),
+        Location.TOP_LEFT
+    );
+
 
 ## PERCENTAGES ABOVE CLOSE
 ## Add labels, plot lines and bubbles for each percentage level above close
@@ -333,6 +343,16 @@ def numBars = 32 * 60;
     AddLabel(
         yes,
         "L: " + round(dailyLow, 2),
+        Color.WHITE,
+        Location.BOTTOM_LEFT
+    );
+
+## Low of day minus ATR (LONG)
+    def lowMinusATR = dailyLow - ATR;
+
+    AddLabel(
+        yes,
+        "L-ATR: " + round(lowMinusATR, 2),
         Color.WHITE,
         Location.BOTTOM_LEFT
     );
