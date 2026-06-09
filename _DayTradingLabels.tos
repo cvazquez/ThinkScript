@@ -33,6 +33,7 @@ declare upper;
 
 input avgATRLength = 14;
 input averageType = AverageType.WILDERS;
+input showPercentageLabels = yes;
 
 def indexList = GetSymbol() == "SPY" or
                 GetSymbol() == "QQQ" or
@@ -149,9 +150,13 @@ def numBars = 32 * 60;
 
 
 ## DTR SHORT
-    def todaysLow_ = if dayStart then low else min(low, todaysLow_[1]);
+    def todaysLow_ = if isPremarket then
+                        low(period="DAY")[1]
+                    else
+                        todaysLow;
 
-    def hdtr = todaysLow_ + ATR;
+    plot hdtr = todaysLow_ + ATR;
+    hdtr.SetDefaultColor(Color.RED);
 
     AddLabel(
         Yes,
@@ -205,7 +210,7 @@ def numBars = 32 * 60;
 
     ## 25% above close
         AddLabel(
-            showEquityPercentageLabels,
+            showEquityPercentageLabels and showPercentageLabels,
             "C+25%: " + closePlus25Pct,
             GlobalColor("closePlusPctBGC"),
             Location.TOP_RIGHT
@@ -223,7 +228,7 @@ def numBars = 32 * 60;
 
     ## 20% above close
         AddLabel(
-            showEquityPercentageLabels,
+            showEquityPercentageLabels and showPercentageLabels,
             "C+20%: " + closePlus20Pct,
             GlobalColor("closePlusPctBGC"),
             Location.TOP_RIGHT
@@ -240,7 +245,7 @@ def numBars = 32 * 60;
 
     ## 15% above close
         AddLabel(
-            showEquityPercentageLabels,
+            showEquityPercentageLabels and showPercentageLabels,
             "C+15%: " + closePlus15Pct,
             GlobalColor("closePlusPctBGC"),
             Location.TOP_RIGHT
@@ -258,7 +263,7 @@ def numBars = 32 * 60;
 
     ## 10% above close
         AddLabel(
-            showEquityPercentageLabels,
+            showEquityPercentageLabels and showPercentageLabels,
             "C+10%: " + closePlus10Pct,
             GlobalColor("closePlusPctBGC"),
             Location.TOP_RIGHT
@@ -283,6 +288,37 @@ def numBars = 32 * 60;
             GlobalColor("closePlusPctBGC"),
             yes
         );
+
+
+    ## Light gray color
+    DefineGlobalColor("closeSinglePctBGC", CreateColor(51, 51, 51));
+
+    # Lines for 6, 7, 8, 9, 11, 12, 13 and 14% above close
+        def closePlus6Pct = round(previousDayClose * 1.06, 2);
+        def closePlus7Pct = round(previousDayClose * 1.07, 2);
+        def closePlus8Pct = round(previousDayClose * 1.08, 2);
+        def closePlus9Pct = round(previousDayClose * 1.09, 2);
+        def closePlus11Pct = round(previousDayClose * 1.11, 2);
+        def closePlus12Pct = round(previousDayClose * 1.12, 2);
+        def closePlus13Pct = round(previousDayClose * 1.13, 2);
+        def closePlus14Pct = round(previousDayClose * 1.14, 2);
+
+        plot closePlus6Line = if showEquityPercentageLabels then closePlus6Pct else Double.NaN;
+        closePlus6Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closePlus7Line = if showEquityPercentageLabels then closePlus7Pct else Double.NaN;
+        closePlus7Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closePlus8Line = if showEquityPercentageLabels then closePlus8Pct else Double.NaN;
+        closePlus8Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closePlus9Line = if showEquityPercentageLabels then closePlus9Pct else Double.NaN;
+        closePlus9Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closePlus11Line = if showEquityPercentageLabels then closePlus11Pct else Double.NaN;
+        closePlus11Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closePlus12Line = if showEquityPercentageLabels then closePlus12Pct else Double.NaN;
+        closePlus12Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closePlus13Line = if showEquityPercentageLabels then closePlus13Pct else Double.NaN;
+        closePlus13Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closePlus14Line = if showEquityPercentageLabels then closePlus14Pct else Double.NaN;
+        closePlus14Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
 
 ################# LONG LABELS ##################
 
@@ -323,7 +359,11 @@ def numBars = 32 * 60;
 
 
 ## DTR LONG
-    def ldtr = todaysHigh - ATR;
+   def ldtr = if isPremarket then
+       high(period="DAY")[1] - ATR
+   else
+       high(period = AggregationPeriod.DAY) - ATR;
+
 
     AddLabel(
         Yes,
@@ -375,7 +415,7 @@ def numBars = 32 * 60;
 
     ## 25% below close
         AddLabel(
-            showEquityPercentageLabels,
+            showEquityPercentageLabels and showPercentageLabels,
             "C-25%: " + closeMinus25Pct,
             GlobalColor("closeMinus25PctBGC"),
             Location.BOTTOM_RIGHT
@@ -392,7 +432,7 @@ def numBars = 32 * 60;
 
     ## 20% below close
         AddLabel(
-            showEquityPercentageLabels,
+            showEquityPercentageLabels and showPercentageLabels,
             "C-20%: " + closeMinus20Pct,
             GlobalColor("closeMinus20PctBGC"),
             Location.BOTTOM_RIGHT
@@ -409,7 +449,7 @@ def numBars = 32 * 60;
 
     ## 15% below close
         AddLabel(
-            showEquityPercentageLabels,
+            showEquityPercentageLabels and showPercentageLabels,
             "C-15%: " + closeMinus15Pct,
             GlobalColor("closeMinus15PctBGC"),
             Location.BOTTOM_RIGHT
@@ -427,7 +467,7 @@ def numBars = 32 * 60;
 
     ## 10% below close
         AddLabel(
-            showEquityPercentageLabels,
+            showEquityPercentageLabels and showPercentageLabels,
             "C-10%: " + closeMinus10Pct,
             GlobalColor("closeMinus10PctBGC"),
             Location.BOTTOM_RIGHT
@@ -455,6 +495,34 @@ def numBars = 32 * 60;
            GlobalColor("closeMinus5PctBGC"),
            yes
         );
+
+
+    # Lines for 6, 7, 8, 9, 11, 12, 13 and 14% below close
+        def closeMinus6Pct = round(previousDayClose * 0.94, 2);
+        def closeMinus7Pct = round(previousDayClose * 0.93, 2);
+        def closeMinus8Pct = round(previousDayClose * 0.92, 2);
+        def closeMinus9Pct = round(previousDayClose * 0.91, 2);
+        def closeMinus11Pct = round(previousDayClose * 0.89, 2);
+        def closeMinus12Pct = round(previousDayClose * 0.88, 2);
+        def closeMinus13Pct = round(previousDayClose * 0.87, 2);
+        def closeMinus14Pct = round(previousDayClose * 0.86, 2);
+
+        plot closeMinus6Line = if showEquityPercentageLabels then closeMinus6Pct else Double.NaN;
+        closeMinus6Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closeMinus7Line = if showEquityPercentageLabels then closeMinus7Pct else Double.NaN;
+        closeMinus7Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closeMinus8Line = if showEquityPercentageLabels then closeMinus8Pct else Double.NaN;
+        closeMinus8Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closeMinus9Line = if showEquityPercentageLabels then closeMinus9Pct else Double.NaN;
+        closeMinus9Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closeMinus11Line = if showEquityPercentageLabels then closeMinus11Pct else Double.NaN;
+        closeMinus11Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closeMinus12Line = if showEquityPercentageLabels then closeMinus12Pct else Double.NaN;
+        closeMinus12Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closeMinus13Line = if showEquityPercentageLabels then closeMinus13Pct else Double.NaN;
+        closeMinus13Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
+        plot closeMinus14Line = if showEquityPercentageLabels then closeMinus14Pct else Double.NaN;
+        closeMinus14Line.SetDefaultColor(GlobalColor("closeSinglePctBGC"));
 
 
     ## Leveraged Indexes - 3, 6 and 9% below close
