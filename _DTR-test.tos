@@ -1,0 +1,89 @@
+# Premarket Daily Trading Range (DTR)
+# Set your extended hours settings on the chart to "Show Extended Hours Trading Session"
+
+
+input avgATRLength = 14;
+input averageType = AverageType.WILDERS;
+
+# Define Pre-Market Session (4:00 AM to 9:30 AM EST)
+def pmStart = 0400;
+def pmEnd = 0930;
+# def isPremarket = SecondsFromTime(pmStart) >= 0 and SecondsTillTime(pmEnd) >= 0;
+#def isPremarket = yes; # For testing purposes, treat all bars as pre-market. Change to above line for actual pre-market filtering.
+
+# --- Premarket High/Low (from BandsIncrementalStudy.tos) ---
+def day = GetDay();
+def newDay = day != day[1];
+def isPremarket = GetTime() < RegularTradingStart(GetYYYYMMDD());
+def pmHigh = if newDay then high else if isPremarket then Max(high, pmHigh[1]) else pmHigh[1];
+def pmLow = if newDay then low else if isPremarket then Min(low, pmLow[1]) else pmLow[1];
+
+
+def ATR = if isPremarket then
+    MovingAverage(
+        averageType,
+        TrueRange(
+            high(period="DAY")[1],
+            close(period="DAY")[1],
+            low(period="DAY")[1]
+        ),
+        avgATRLength
+)
+else
+    WildersAverage(
+        TrueRange(
+            high(period = AggregationPeriod.DAY),
+            close(period = AggregationPeriod.DAY),
+            low(period = AggregationPeriod.DAY)
+        ),
+        avgATRLength
+    )
+;
+
+
+# Calculate High and Low during Pre-market
+#def pmHigh = if isPremarket and !isPremarket[1] then high
+ #            else if isPremarket then Max(high, pmHigh[1])
+ #            else pmHigh[1];
+
+#def pmLow = if isPremarket and !isPremarket[1] then low
+#            else if isPremarket then Min(low, pmLow[1])
+#            else pmLow[1];
+
+# Plot Pre-market High and Low
+def PM_High_Line = if pmHigh > 0 then pmHigh else Double.NaN;
+#AddLabel(yes, "PM High: " + AsDollars(pmHigh), Color.GREEN);
+
+def PM_Low_Line = if pmLow > 0 then pmLow else Double.NaN;
+#AddLabel(yes, "PM Low: " + AsDollars(pmLow), Color.RED);
+
+
+# Calculate DTR (Distance between Pre-market High and Low)
+def DTR = pmHigh - pmLow;
+def hdtr = pmHigh + ATR;
+def ldtr = pmLow - ATR;
+
+def LowPlusATR = pmLow + ATR;
+def HighMinusATR = pmHigh - ATR;
+
+
+# Display Pre-market Range and Values on a Label
+def boolPreMarket = if isPremarket == 1 then yes else no;
+AddLabel(
+    boolPreMarket,
+    "preHDTR: " + AsDollars(hdtr) + " | " +
+    "preLDTR: " + AsDollars(ldtr) + " | " +
+    "preLowPlusATR: " + AsDollars(LowPlusATR) + " | " +
+    "preHighMinusATR: " + AsDollars(HighMinusATR),
+    #"PM DTR: " + AsDollars(DTR) +
+    #" (pmHigh: " + AsDollars(pmHigh) +
+    #" | pmLow: " + AsDollars(pmLow) + ")",
+    Color.WHITE,
+    Location.TOP_RIGHT
+
+);
+
+plot HighDTR = if boolPreMarket then hdtr else Double.NaN;
+highDTR.SetDefaultColor(Color.WHITE);
+plot LowDTR = if boolPreMarket then ldtr else Double.NaN;
+lowDTR.SetDefaultColor(Color.WHITE);
