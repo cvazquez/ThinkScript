@@ -3,7 +3,8 @@
 # Date: 20260622
 # Author: Carlos Vazquez
 
-# Day Trading Labels
+# Column to display an inputed percentage value over/under previous day's close,
+# based on if price is over/under previous day's close
 # ------------------
 # This study calculates and plots two lines:
 # 1. A line representing a percentage above the previous day's close (closePlusPct)
