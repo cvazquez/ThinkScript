@@ -1,0 +1,62 @@
+# FileName: _ColumnMultipleOfATRSTUDY.tos
+# Study Name: _ColumnMultipleOfATR
+# Date: 20260622
+# Author: Carlos Vazquez
+
+# This study calculates and plots a line representing a multiple of the Average True Range (ATR) above or
+# below the previous day's close, based on the current price's position relative to that close.
+# The multiple is defined by user input and can be adjusted as needed.
+#
+# To be used as a column, specifically in the mobile app
+
+input multiple = 2.00;
+input avgATRLength = 14;
+input averageType = AverageType.WILDERS;
+
+def isPremarket = GetTime() < RegularTradingStart(GetYYYYMMDD());
+def yClose = close(period = AggregationPeriod.DAY)[1];
+def cClose = close();
+
+def ATR = if isPremarket then
+    MovingAverage(
+        averageType,
+        TrueRange(
+            high(period="DAY")[1],
+            close(period="DAY")[1],
+            low(period="DAY")[1]
+        ),
+        avgATRLength
+)
+else
+    WildersAverage(
+        TrueRange(
+            high(period = AggregationPeriod.DAY),
+            close(period = AggregationPeriod.DAY),
+            low(period = AggregationPeriod.DAY)
+        ),
+        avgATRLength
+    )
+;
+
+# ATR reference levels
+def yClosePlusATR = yClose + (ATR * multiple);
+def yCloseMinusATR = yClose - (ATR * multiple);
+
+# Direction logic
+def isShort = cClose > yClose;
+def isLong  = cClose < yClose;
+
+# % over ATR (short) and % below ATR (long)
+def shortValue = yClosePlusATR; # + (yClosePlusATR * (multiple/100));
+def longValue  = yCloseMinusATR; # - (yCloseMinusATR * (multiple/100));
+
+# display the "inputed" percentage over ATR
+plot result =
+    if isShort then round(shortValue, 2)
+    else if isLong then round(longValue, 2)
+    else 0;
+
+#AddLabel(yes, "ATR: " + Round(ATR, 2), Color.GRAY);
+#AddLabel(yes, "Price: " + Round(cClose, 2), Color.GRAY);
+#AddLabel(yes, "Direction: " + if isShort then "Short" else if isLong then "Long" else "Neutral", if isShort then Color.RED else if isLong then Color.GREEN else Color.GRAY);
+#AddLabel(yes, "ATR(" + multiple + "): " + Round(result, 2), if isShort then Color.RED else if isLong then Color.GREEN else Color.GRAY);
