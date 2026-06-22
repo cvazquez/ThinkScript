@@ -1,0 +1,62 @@
+# FileName: _ColumnDTR.tos
+# Study Name: _ColumnDTR
+# Date: 20260622
+# Author: Carlos Vazquez
+#
+# This study calculates and plots two lines:
+# 1. A line representing the previous day's high plus the Average True Range (ATR)
+# 2. A line representing the previous day's low minus the Average True Range (ATR)
+# The ATR is calculated based on the previous day's high, low, and close prices.
+#
+# To be used as a column, specifically in the mobile app
+
+
+input avgATRLength = 14;
+input averageType = AverageType.WILDERS;
+
+
+def basePeriod = AggregationPeriod.DAY;
+def isPremarket = GetTime() < RegularTradingStart(GetYYYYMMDD());
+def todaysLow = Lowest(low(period =baseperiod)[0], 1);
+
+
+def ATR = if isPremarket then
+    MovingAverage(
+        averageType,
+        TrueRange(
+            high(period="DAY")[1],
+            close(period="DAY")[1],
+            low(period="DAY")[1]
+        ),
+        avgATRLength
+)
+else
+    WildersAverage(
+        TrueRange(
+            high(period = AggregationPeriod.DAY),
+            close(period = AggregationPeriod.DAY),
+            low(period = AggregationPeriod.DAY)
+        ),
+        avgATRLength
+    )
+;
+
+## DTR SHORT
+    def todaysLow_ = if isPremarket then
+                        low(period="DAY")[1]
+                    else
+                        todaysLow;
+
+    plot hdtr = todaysLow_ + ATR;
+
+
+## DTR LONG
+   def todaysHigh = if isPremarket then
+                        high(period="DAY")[1]
+                    else
+                        high(period = AggregationPeriod.DAY) ;
+
+   plot ldtr = if isPremarket then
+                   todaysHigh - ATR
+               else
+                   todaysHigh - ATR;
