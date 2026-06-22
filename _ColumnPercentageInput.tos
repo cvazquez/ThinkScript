@@ -1,0 +1,25 @@
+# FileName: _ColumnPercentageInput.tos
+# Study Name: _ColumnPercentageInput
+# Date: 20260622
+# Author: Carlos Vazquez
+
+# Day Trading Labels
+# ------------------
+# This study calculates and plots two lines:
+# 1. A line representing a percentage above the previous day's close (closePlusPct)
+# 2. A line representing a percentage below the previous day's close (closeMinusPct)
+# The percentage is defined by the user input and can be adjusted as needed.
+#
+# To be used as a column, specifically in the mobile app
+
+
+input percentage = 10.00;
+
+def previousDayClose = close(period = AggregationPeriod.DAY)[1];
+
+## PERCENTAGE ABOVE CLOSE
+    plot closePlusPct = round(previousDayClose * (1 + percentage / 100), 2);
+
+
+## PERCENTAGES BELOW CLOSE
+    plot closeMinusPct = round(previousDayClose * (1 - percentage / 100), 2);
