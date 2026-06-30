@@ -228,9 +228,9 @@ def hasPosition = entry > 0;
 ############### ATR labels ###############
     AddLabel(yes, "ATR: " + Round(atr, 2), Color.YELLOW, Location.TOP_LEFT);
 
-    AddLabel(yes, "H-ATR: " + Round(highATR, 2), Color.GREEN, Location.TOP_LEFT);
+    AddLabel(yes, "C+ATR: " + Round(highATR, 2), CreateColor(255, 126, 156), Location.TOP_LEFT);
 
-    AddLabel(yes, "L-ATR: " + Round(lowATR, 2), Color.GREEN, Location.BOTTOM_LEFT);
+    AddLabel(yes, "C-ATR: " + Round(lowATR, 2), CreateColor(181, 181, 181), Location.BOTTOM_LEFT);
 
 
 ## DTR SHORT
