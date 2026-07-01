@@ -17,6 +17,7 @@
 # * ATR Short
 # * 1, 2 and 3% over ATR Short
 # * DTR Short
+# * DTR Pre-Market Short
 # * High of Day
 # * 32 Hour High of Day
 # * 10, 15 and 20% over CLOSE labels
@@ -25,6 +26,7 @@
 # * ATR Long
 # 1, 2 and 3% under ATR Long
 # * DTR Long
+# * DTR Pre-Market Long
 # * Low of Day
 # * 32 Hour Low of Day
 # * 10, 15 and 20% under CLOSE labels
@@ -80,6 +82,18 @@ def dayStart = GetDay() != GetDay()[1];  # Identifies the start of a new day
 
 # This calculates the number of 1-minute bars in 32 hours
 def numBars = 32 * 60;
+
+
+## PreMarket Calculations
+def pmHigh = if dayStart then high else if isPremarket then Max(high, pmHigh[1]) else pmHigh[1];
+def pmLow = if dayStart then low else if isPremarket then Min(low, pmLow[1]) else pmLow[1];
+
+# Calculate DTR (Distance between Pre-market High and Low)
+def pmHDTR = pmHigh + ATR;
+def pmLDTR = pmLow - ATR;
+
+def LowPlusATR = pmLow + ATR;
+def HighMinusATR = pmHigh - ATR;
 
 
 ################# MISCELLANEOUS LABELS ##################
@@ -164,6 +178,18 @@ def numBars = 32 * 60;
         Color.RED,
         Location.TOP_LEFT
     );
+
+
+    AddLabel(
+        yes,
+        "preHDTR: " + AsDollars(pmHDTR) + " | " +
+        "preLowPlusATR: " + AsDollars(LowPlusATR),
+        Color.WHITE,
+        Location.TOP_RIGHT
+    );
+
+    plot PreHDTR = if isPremarket then pmHDTR else Double.NaN;
+    PreHDTR.SetDefaultColor(Color.WHITE);
 
 
 ## HIGH OF DAY (SHORT)
@@ -372,6 +398,17 @@ def numBars = 32 * 60;
         Location.BOTTOM_LEFT
     );
 
+
+    AddLabel(
+        yes,
+        "preLDTR: " + AsDollars(pmLDTR) + " | " +
+        "preHighMinusATR: " + AsDollars(HighMinusATR),
+        Color.WHITE,
+        Location.BOTTOM_RIGHT
+    );
+
+    plot pmLowDTR = if isPremarket then pmLDTR else Double.NaN;
+    pmLowDTR.SetDefaultColor(Color.WHITE);
 
 ## LOW OF DAY
     def dailyLow = if dayStart then low else min(low, dailyLow[1]);  # Tracks the low for the day
