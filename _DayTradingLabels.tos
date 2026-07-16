@@ -129,6 +129,17 @@ def HighMinusATR = pmHigh - ATR;
 ## Percentages Over ATR
     DefineGlobalColor("overATRBGC", CreateColor(255, 126, 156));
 
+    # Add a label for 1.25 times ATR plus previous day's close
+    def onePointTwoFive = 1.25;
+    def atrPlus1_25Xs = previousDayClose + (ATR * onePointTwoFive);
+
+    AddLabel(
+        yes,
+        "atr(" + onePointTwoFive + ") : " + Round(atrPlus1_25Xs, 2),
+        GlobalColor("overATRBGC"),
+        Location.TOP_LEFT
+    );
+
     # Add a label for 1.5 times ATR plus previous day's close
     def onePointFive = 1.50;
     def atrPlus1_5Xs = previousDayClose + (ATR * onePointFive);
@@ -356,12 +367,21 @@ def HighMinusATR = pmHigh - ATR;
 ## Percentages Under ATR
     DefineGlobalColor("underATRBGC", CreateColor(211, 211, 211));
 
-    # Add a label for 1.5 times ATR minus previous day's close
-    def atrMinus1_5Xs = previousDayClose - (ATR * onePointFive);
+    # Add a label for 1.25 times ATR minus previous day's close
+    def atrMinus1_25Xs = previousDayClose - (ATR * onePointTwoFive);
     AddLabel(
         yes,
-        "atr(" + onePointFive + ") : " + Round(atrMinus1_5Xs, 2),
+        "atr(" + onePointTwoFive + ") : " + Round(atrMinus1_25Xs, 2),
         GlobalColor("underATRBGC"),
+        Location.BOTTOM_LEFT
+    );
+
+   # Add a label for 1.50 times ATR minus previous day's close
+    def atrMinus1_50Xs = previousDayClose - (ATR * onePointFive);
+    AddLabel(
+        yes,
+        "atr(" + onePointFive + ") : " + Round(atrMinus1_50Xs, 2),
+        CreateColor(171, 171, 171),
         Location.BOTTOM_LEFT
     );
 
