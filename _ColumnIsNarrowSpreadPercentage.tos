@@ -1,0 +1,16 @@
+# FileName: _ColumnIsNarrowSpreadPercentage.tos
+# Study Name: _ColumnIsNarrowSpreadPercentage
+# Date: 202600716
+# Author: Carlos Vazquez
+#
+# This study returns true if the spread is less than 0.10% of the bid price, or if the bid price is greater than $100.
+# To be used as a column in scan results to identify stocks with narrow spreads.
+
+def bid = close(priceType = PriceType.BID);
+def ask = close(priceType = PriceType.ASK);
+def spread = ask - bid;
+
+# 10 basis points (0.10%) of price, floored at 1 cent
+def maxSpread = Max(0.01, bid * 0.0010);
+
+plot NarrowSpread = spread <= maxSpread;
