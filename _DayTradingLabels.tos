@@ -71,6 +71,9 @@ def dayStart = GetDay() != GetDay()[1];  # Identifies the start of a new day
 # This calculates the number of 1-minute bars in 32 hours
 def numBars = 32 * 60;
 
+def lastBar = !IsNaN(close) and IsNaN(close[-1]);
+def lastBarBubbles = lastBar[25];
+def lastBarBubblesATR = lastBar[85];
 
 ## PreMarket Calculations
 def pmHigh = if dayStart then high else if isPremarket then Max(high, pmHigh[1]) else pmHigh[1];
@@ -119,8 +122,15 @@ def HighMinusATR = pmHigh - ATR;
 
     # Add a label for 1.5 times ATR plus previous day's close
     def onePointFive = 1.50;
-    def atrPlus1_5Xs = previousDayClose + (ATR * onePointFive);
+    plot atrPlus1_5Xs = previousDayClose + (ATR * onePointFive);
 
+    AddChartBubble(
+        lastBarBubblesATR and !IsNaN(atrPlus1_5Xs) and !IsNaN(previousDayClose),
+        atrPlus1_5Xs,
+        "ATR(1.5): " + Round(atrPlus1_5Xs, 2),
+        GlobalColor("overATRBGC"),
+        yes
+    );
     AddLabel(
         yes,
         "atr(" + onePointFive + ") : " + Round(atrPlus1_5Xs, 2),
@@ -130,8 +140,15 @@ def HighMinusATR = pmHigh - ATR;
 
     # Add a label for 2 times ATR plus previous day's close
     def twoXs = 2.00;
-    def atrPlus2Xs = previousDayClose + (ATR * twoXs);
+    plot atrPlus2Xs = previousDayClose + (ATR * twoXs);
 
+    AddChartBubble(
+        lastBarBubblesATR and !IsNaN(atrPlus2Xs) and !IsNaN(previousDayClose),
+        atrPlus2Xs,
+        "ATR(2.0): " + Round(atrPlus2Xs, 2),
+        GlobalColor("overATRBGC"),
+        yes
+    );
     AddLabel(
         yes,
         "atr(" + twoXs + ") : " + Round(atrPlus2Xs, 2),
@@ -141,8 +158,15 @@ def HighMinusATR = pmHigh - ATR;
 
     # Add a label for 2.5 times ATR plus previous day's close
     def twoPointFiveXs = 2.50;
-    def atrPlus2_5Xs = previousDayClose + (ATR * twoPointFiveXs);
+    plot atrPlus2_5Xs = previousDayClose + (ATR * twoPointFiveXs);
 
+    AddChartBubble(
+        lastBarBubblesATR and !IsNaN(atrPlus2_5Xs) and !IsNaN(previousDayClose),
+        atrPlus2_5Xs,
+        "ATR(2.5): " + Round(atrPlus2_5Xs, 2),
+        GlobalColor("overATRBGC"),
+        yes
+    );
     AddLabel(
         yes,
         "atr(" + twoPointFiveXs + ") : " + Round(atrPlus2_5Xs, 2),
@@ -215,9 +239,6 @@ def HighMinusATR = pmHigh - ATR;
     def closePlus10Pct = round(previousDayClose * 1.10, 2);
     def closePlus5Pct = round(previousDayClose * 1.05, 2);
 
-
-    def lastBar = !IsNaN(close) and IsNaN(close[-1]);
-    def lastBarBubbles = lastBar[25];
 
     # Define colors for the percentage levels above close
     DefineGlobalColor("closePlusPctBGC", CreateColor(255, 70, 162));
@@ -294,7 +315,14 @@ def HighMinusATR = pmHigh - ATR;
     DefineGlobalColor("underATRBGC", CreateColor(211, 211, 211));
 
    # Add a label for 1.50 times ATR minus previous day's close
-    def atrMinus1_50Xs = previousDayClose - (ATR * onePointFive);
+    plot atrMinus1_50Xs = previousDayClose - (ATR * onePointFive);
+    AddChartBubble(
+        lastBarBubblesATR and !IsNaN(atrMinus1_50Xs) and !IsNaN(previousDayClose),
+        atrMinus1_50Xs,
+        "ATR(1.5): " + Round(atrMinus1_50Xs, 2),
+        GlobalColor("underATRBGC"),
+        yes
+    );
     AddLabel(
         yes,
         "atr(" + onePointFive + ") : " + Round(atrMinus1_50Xs, 2),
@@ -303,7 +331,14 @@ def HighMinusATR = pmHigh - ATR;
     );
 
     # Add a label for 2 times ATR minus previous day's close
-    def atrMinus2Xs = previousDayClose - (ATR * twoXs);
+    plot atrMinus2Xs = previousDayClose - (ATR * twoXs);
+    AddChartBubble(
+            lastBarBubblesATR and !IsNaN(atrMinus2Xs) and !IsNaN(previousDayClose),
+            atrMinus2Xs,
+            "ATR(2.0): " + Round(atrMinus2Xs, 2),
+            GlobalColor("underATRBGC"),
+            yes
+        );
     AddLabel(
         yes,
         "atr(" + twoXs + ") : " + Round(atrMinus2Xs, 2),
@@ -312,7 +347,14 @@ def HighMinusATR = pmHigh - ATR;
     );
 
     # Add a label for 2.5 times ATR minus previous day's close
-    def atrMinus2_5Xs = previousDayClose - (ATR * twoPointFiveXs);
+    plot atrMinus2_5Xs = previousDayClose - (ATR * twoPointFiveXs);
+    AddChartBubble(
+            lastBarBubblesATR and !IsNaN(atrMinus2_5Xs) and !IsNaN(previousDayClose),
+            atrMinus2_5Xs,
+            "ATR(2.5): " + Round(atrMinus2_5Xs, 2),
+            GlobalColor("underATRBGC"),
+            yes
+        );
     AddLabel(
         yes,
         "atr(" + twoPointFiveXs + ") : " + Round(atrMinus2_5Xs, 2),
